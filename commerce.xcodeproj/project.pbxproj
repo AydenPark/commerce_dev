@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D277B3251BE85B3B004B62DE /* CustomClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D277B3241BE85B3B004B62DE /* CustomClass.swift */; };
 		D285BF201BE7E458002C0E9C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D285BF1F1BE7E458002C0E9C /* AppDelegate.swift */; };
 		D285BF221BE7E458002C0E9C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D285BF211BE7E458002C0E9C /* ViewController.swift */; };
 		D285BF251BE7E458002C0E9C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D285BF231BE7E458002C0E9C /* Main.storyboard */; };
@@ -15,6 +16,8 @@
 		D285BF2D1BE7E458002C0E9C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D285BF2B1BE7E458002C0E9C /* LaunchScreen.storyboard */; };
 		D285BF381BE7E458002C0E9C /* commerceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D285BF371BE7E458002C0E9C /* commerceTests.swift */; };
 		D285BF431BE7E458002C0E9C /* commerceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D285BF421BE7E458002C0E9C /* commerceUITests.swift */; };
+		D285BF551BE7E87F002C0E9C /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D285BF541BE7E87F002C0E9C /* MainViewController.swift */; };
+		D2CEFF7E1BE84BA000BF035A /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2CEFF7D1BE84BA000BF035A /* Resource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D277B3241BE85B3B004B62DE /* CustomClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomClass.swift; sourceTree = "<group>"; };
 		D285BF1C1BE7E458002C0E9C /* commerce.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = commerce.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D285BF1F1BE7E458002C0E9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D285BF211BE7E458002C0E9C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +53,8 @@
 		D285BF3E1BE7E458002C0E9C /* commerceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = commerceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D285BF421BE7E458002C0E9C /* commerceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = commerceUITests.swift; sourceTree = "<group>"; };
 		D285BF441BE7E458002C0E9C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D285BF541BE7E87F002C0E9C /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MainViewController.swift; path = ../MainViewController.swift; sourceTree = "<group>"; };
+		D2CEFF7D1BE84BA000BF035A /* Resource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,9 @@
 				D285BF2B1BE7E458002C0E9C /* LaunchScreen.storyboard */,
 				D285BF2E1BE7E458002C0E9C /* Info.plist */,
 				D285BF261BE7E458002C0E9C /* commerce.xcdatamodeld */,
+				D2CEFF7D1BE84BA000BF035A /* Resource.swift */,
+				D285BF541BE7E87F002C0E9C /* MainViewController.swift */,
+				D277B3241BE85B3B004B62DE /* CustomClass.swift */,
 			);
 			path = commerce;
 			sourceTree = "<group>";
@@ -195,6 +204,7 @@
 				TargetAttributes = {
 					D285BF1B1BE7E458002C0E9C = {
 						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = 24R2PY27TP;
 					};
 					D285BF321BE7E458002C0E9C = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -259,8 +269,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				D285BF221BE7E458002C0E9C /* ViewController.swift in Sources */,
+				D2CEFF7E1BE84BA000BF035A /* Resource.swift in Sources */,
 				D285BF201BE7E458002C0E9C /* AppDelegate.swift in Sources */,
+				D277B3251BE85B3B004B62DE /* CustomClass.swift in Sources */,
 				D285BF281BE7E458002C0E9C /* commerce.xcdatamodeld in Sources */,
+				D285BF551BE7E87F002C0E9C /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +413,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = commerce/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.strucel.commerce;
@@ -411,6 +425,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = commerce/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.strucel.commerce;
@@ -485,6 +500,7 @@
 				D285BF491BE7E458002C0E9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D285BF4A1BE7E458002C0E9C /* Build configuration list for PBXNativeTarget "commerceTests" */ = {
 			isa = XCConfigurationList;
@@ -493,6 +509,7 @@
 				D285BF4C1BE7E458002C0E9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D285BF4D1BE7E458002C0E9C /* Build configuration list for PBXNativeTarget "commerceUITests" */ = {
 			isa = XCConfigurationList;
@@ -501,6 +518,7 @@
 				D285BF4F1BE7E458002C0E9C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 

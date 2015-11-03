@@ -7,7 +7,16 @@
 //
 
 import UIKit
+import SystemConfiguration.CaptiveNetwork
 import CoreData
+
+//Custom Swifts
+let rs_Strings: rsStrings? = rsStrings()
+
+//Custom Color Set
+var colorNavigation: UInt = 0xFF5722
+var colorGray: UInt = 0xAAAAAA
+var colorWhite: UInt = 0xFFFFFF
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        // NavigationBar모양 설정
+        UINavigationBar.appearance().barTintColor = UIColorFromRGB(colorNavigation)
+        var attributes = [
+            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 20)!
+        ]
+        UINavigationBar.appearance().titleTextAttributes = attributes
+        UIBarButtonItem.appearance().tintColor = UIColor.whiteColor()
+        UINavigationBar.appearance().tintColor = UIColor.whiteColor()
+        // UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(UIColorFromRGB(colorNavigation)), forBarMetrics: UIBarMetrics.Default)
+        UINavigationBar.appearance().shadowImage = UIImage()
         return true
     }
 
