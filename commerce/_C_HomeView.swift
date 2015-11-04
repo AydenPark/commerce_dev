@@ -20,10 +20,7 @@ public class HomeView: UIView {
     }
     
     public func initContents(count: Int) {
-        
-        
-        
-        
+   
         var titleView = UILabel()
         titleView.frame = CGRectMake(0, 0, self.canvasView.frame.width, CGFloat((rs_Values?._text_area_height)!))
         for n in 0...count {

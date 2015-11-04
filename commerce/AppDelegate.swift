@@ -14,9 +14,12 @@ import CoreData
 let rs_Strings: rsStrings? = rsStrings()
 let rs_Values: rsValues? = rsValues()
 var rs_C_Event: rsCEvent? = rsCEvent()
+var rs_UpdateDB: Items_DB? = Items_DB()
 
 //Test Class
 var test_Items: testItems? = testItems()
+var test_ItemsEvent: testItemsEvent? = testItemsEvent()
+var test_ItemsJoin: testItemsJoin? = testItemsJoin()
 
 //Custom Color Set
 var colorNavigation: UInt = 0xFF5722

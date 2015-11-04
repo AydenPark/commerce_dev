@@ -15,5 +15,6 @@ import CoreData
 extension Item_Tag {
 
     @NSManaged var name: String?
+    @NSManaged var i_tuid: String?
 
 }

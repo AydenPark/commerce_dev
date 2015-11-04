@@ -27,6 +27,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.text = rs_Strings?._main_navi_title
         titleLabel.textAlignment = NSTextAlignment.Center
         titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
+        
         //modify searchBar
         var searchBar:UISearchBar = UISearchBar() //create searchBar
         searchBar.searchBarStyle = UISearchBarStyle.Minimal
@@ -48,7 +49,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         self.navigationItem.titleView = customView
 
         //custom tabbar
-        self.customTabmenu.frame = CGRectMake(0, customView.frame.height + 20, self.view.frame.width, 44)
+        self.customTabmenu.frame = CGRectMake(0, customView.frame.height + 20, self.view.frame.width, 45)
         self.customTabmenu.initView(self.view.frame.size)
         self.view.addSubview(self.customTabmenu)
         
@@ -60,13 +61,13 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         
         //scrollview -> content view
         self.scrollView = UIScrollView(frame: CGRectMake(0, customView.frame.height + 20 + self.customTabmenu.frame.height, self.view.frame.width, self.view.frame.height - (customView.frame.height + 20 + self.customTabmenu.frame.height)))
-        self.scrollView.backgroundColor = UIColor.blueColor()
+        self.scrollView.backgroundColor = UIColor.clearColor()
         self.scrollView.showsHorizontalScrollIndicator = false;
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.pagingEnabled = true
         self.scrollView.delegate = self
-        
         self.view.addSubview(self.scrollView)
+        
 
         super.viewDidLoad()
     }
@@ -75,32 +76,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         self.customTabmenu.selection(0)
         initView()
         
-        //test
-   //     test_Items?.initData()
-        
-        let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let context:NSManagedObjectContext = app.managedObjectContext
-        let request: NSFetchRequest = NSFetchRequest(entityName: "Item_Info")
-        request.returnsObjectsAsFaults = false
-        print(request)
-        
- //       let iuid = "fr001"
- //       request.predicate = NSPredicate(format: "iuid == %@", iuid as NSString)
-
-        var error: NSError?
-        var results: NSArray = []
-        
-        do {
-            results = try context.executeFetchRequest(request)
-            // success ...
-            print(results.count)
-            for item in results {
-                print(item.name)
-            }
-        } catch let error as NSError {
-            // failure
-            print("Fetch failed: \(error.localizedDescription)")
-        }
+        rs_UpdateDB?.updateData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -109,6 +85,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func initView() {
+        //pageSize => 메뉴 탭 갯수
         let pageSize = 4
         let scrWidth = self.view.frame.width, scrHeight = self.view.frame.height
         scrollView.contentSize = CGSizeMake(CGFloat(pageSize) * scrWidth, 0)
@@ -117,24 +94,105 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         {
             switch i {
             case 0:
-                let listView = UIView()
-                listView.frame = CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)
-                listView.backgroundColor = UIColor.whiteColor()
-                self.scrollView.addSubview(listView)
+                //ScrollView 생성
+                var event_count:Int?
+                var total_contents_rows:Int = 0
+                var content_height = 4/3 * self.view.frame.width/2
+                var event_title_height = 48
+                
+                var eventScrollView = UIScrollView()
+                eventScrollView.frame =  CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)
+                eventScrollView.scrollEnabled = true
+                
+                //case 0 -> 홈 화면 -> Item_Event CoreData값 로드
+                let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                let context:NSManagedObjectContext = app.managedObjectContext
+                let request: NSFetchRequest = NSFetchRequest(entityName: "Item_Event")
+                request.returnsObjectsAsFaults = false
+                
+                var error: NSError?
+                var results: NSArray = []
+                
+                do {
+                    results = try context.executeFetchRequest(request)
+                    // success ...
+                    //현재 이벤트 진행중인 카테고리 갯수
+                    event_count = results.count
+                    //이벤트 euid 획득
+                    var n = 0
+                    for item in results {
+                        var euid = item.valueForKey("euid")! as! String
+                        //현재 이벤트 진행중인 카테고리에 해당하는 아이템 검색
+                        let joinContext:NSManagedObjectContext = app.managedObjectContext
+                        let joinRequest: NSFetchRequest = NSFetchRequest(entityName: "Item_Join")
+                        joinRequest.predicate = NSPredicate(format: "(euid = %@)", euid)
+                        
+                        var error: NSError?
+                        var results: NSArray = []
+                        
+                        do {
+                            results = try context.executeFetchRequest(joinRequest)
+
+                            var eventView = EventView()
+                            //카테고리 당 위치 = (개별 콘텐트 높이 * 콘텐트 줄 수) + (타이틀 영역 높이 * 현재 카테고리 순번)
+                            //카테고리 당 영역 = (부모 뷰 너비, 개별 콘텐트 높이 * (카테고리에 포함된 아이템 갯수 / 2 + 카테고리에 포함된 아이템 갯수 % 2) + 타이틀 영역 높이
+                            eventView.frame = CGRectMake(0, (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height)) * CGFloat(n), self.view.frame.width, (content_height * CGFloat((results.count / 2) + (results.count % 2))) + CGFloat(event_title_height))
+                            
+                            total_contents_rows += ((results.count / 2) + (results.count % 2))
+                            
+                            var itemValue = [rsCItems]()
+                            var m = 0
+                            for item in results {
+                                var iuid = item.valueForKey("iuid") as! String
+                                //iuid를 이용하여 아이템 코어 데이터로 부터 아이템 정보 획득
+                                //현재 이벤트 진행중인 카테고리에 해당하는 아이템 검색
+                                let itemContext:NSManagedObjectContext = app.managedObjectContext
+                                let itemRequest: NSFetchRequest = NSFetchRequest(entityName: "Item_Info")
+                                print(iuid)
+                                itemRequest.predicate = NSPredicate(format: "(iuid = %@)", iuid)
+                                var error: NSError?
+                                var results: NSArray = []
+                                
+                                do {
+                                    results = try itemContext.executeFetchRequest(itemRequest)
+                                    var tmpItem = rsCItems()
+                                    tmpItem._name = results[0].valueForKey("name") as! String
+                                    tmpItem._image = results[0].valueForKey("image") as! String
+                                    tmpItem._price = results[0].valueForKey("price") as! String
+                                    tmpItem._origin = results[0].valueForKey("origin") as! String
+                                    itemValue.append(tmpItem)
+                                }
+                                m += 1
+                            }                            
+                            
+                            eventView.initView(item.valueForKey("title") as! String, value: itemValue, count: results.count)
+                            eventScrollView.addSubview(eventView)
+                        }
+                        n += 1
+                    }
+                    
+                } catch let error as NSError {
+                    // failure
+                    print("Fetch failed: \(error.localizedDescription)")
+                }
+                eventScrollView.contentSize = CGSizeMake(self.view.frame.width, (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height) * CGFloat(event_count!)))
+                
+                self.scrollView.addSubview(eventScrollView)
+                
             case 1:
                 let listView = UIView()
                 listView.frame = CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)
-                listView.backgroundColor = UIColor.blueColor()
+               // listView.backgroundColor = UIColor.blueColor()
                 self.scrollView.addSubview(listView)
             case 2:
                 let listView = UIView()
                 listView.frame = CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)
-                listView.backgroundColor = UIColor.blackColor()
+              //  listView.backgroundColor = UIColor.blackColor()
                 self.scrollView.addSubview(listView)
             case 3:
                 let listView = UIView()
                 listView.frame = CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)
-                listView.backgroundColor = UIColor.yellowColor()
+               // listView.backgroundColor = UIColor.yellowColor()
                 self.scrollView.addSubview(listView)
             default:
                 return

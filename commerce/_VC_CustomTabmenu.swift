@@ -22,8 +22,10 @@ public class CustomTabmenu: UIView {
     var tab2Select = UIView()
     var tab3Select = UIView()
     
+    var indicator = UIView()
+    
     public func initView(frame:CGSize) {
-        self.view.frame = CGRectMake(0, 0, frame.width, 44)
+        self.view.frame = CGRectMake(0, 0, frame.width, 45)
         self.view.backgroundColor = UIColor.whiteColor()
         
         self.homeButton = UIButton(type: .System)
@@ -69,6 +71,10 @@ public class CustomTabmenu: UIView {
         self.view.addSubview(self.tab1Select)
         self.view.addSubview(self.tab2Select)
         self.view.addSubview(self.tab3Select)
+        
+        self.indicator.frame = CGRectMake(0, 44, frame.width, 1)
+        self.indicator.backgroundColor = UIColorFromRGB(colorGray)
+        self.view.addSubview(self.indicator)
         
         self.addSubview(self.view)
     }

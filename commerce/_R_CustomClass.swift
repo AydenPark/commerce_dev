@@ -10,7 +10,10 @@ import Foundation
 import UIKit
 
 public class rsCItems {
-    
+    var _image: String?
+    var _name: String?
+    var _origin: String?
+    var _price: String?
 }
 
 public class rsCEvent {
@@ -39,4 +42,3 @@ func UIColorFromRGB(rgbValue: UInt) -> UIColor {
         alpha: CGFloat(1.0)
     )
 }
-

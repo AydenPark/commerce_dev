@@ -14,7 +14,7 @@
         <relationship name="event_category" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event_Category" syncable="YES"/>
     </entity>
     <entity name="Item_Event" representedClassName="Item_Event" syncable="YES">
-        <attribute name="i_euid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="euid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Item_Info" representedClassName="Item_Info" syncable="YES">
@@ -26,10 +26,10 @@
         <relationship name="item_event" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item_Event" syncable="YES"/>
         <relationship name="item_tag" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item_Tag" syncable="YES"/>
     </entity>
-    <entity name="Item_Join" syncable="YES">
-        <attribute name="i_euid" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="i_tuid" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Item_Join" representedClassName="Item_Join" syncable="YES">
+        <attribute name="euid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tuid" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Item_Tag" representedClassName="Item_Tag" syncable="YES">
         <attribute name="i_tuid" optional="YES" attributeType="String" syncable="YES"/>

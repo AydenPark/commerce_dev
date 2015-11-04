@@ -2,7 +2,7 @@
 //  Item_Event+CoreDataProperties.swift
 //  commerce
 //
-//  Created by jigwan on 2015. 11. 4..
+//  Created by jigwan on 2015. 11. 5..
 //  Copyright © 2015년 STRUCEL. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -15,5 +15,6 @@ import CoreData
 extension Item_Event {
 
     @NSManaged var title: String?
+    @NSManaged var euid: String?
 
 }
