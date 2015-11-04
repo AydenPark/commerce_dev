@@ -1,4 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9057" systemVersion="15B42" minimumToolsVersion="Automatic">
+    <entity name="Event_Category" representedClassName=".Event_Category" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="idx" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="event_item" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event_Item" syncable="YES"/>
+    </entity>
+    <entity name="Event_Item" representedClassName=".Event_Item" syncable="YES">
+        <attribute name="iuid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Event_Total" representedClassName=".Event_Total" syncable="YES">
+        <attribute name="count" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="event_category" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Event_Category" syncable="YES"/>
+    </entity>
+    <entity name="Item_Event" representedClassName="Item_Event" syncable="YES">
+        <attribute name="i_euid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Item_Info" representedClassName="Item_Info" syncable="YES">
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="origin" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="item_event" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item_Event" syncable="YES"/>
+        <relationship name="item_tag" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item_Tag" syncable="YES"/>
+    </entity>
+    <entity name="Item_Join" syncable="YES">
+        <attribute name="i_euid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="i_tuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iuid" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Item_Tag" representedClassName="Item_Tag" syncable="YES">
+        <attribute name="i_tuid" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Event_Item" positionX="252" positionY="203" width="128" height="58"/>
+        <element name="Event_Category" positionX="-9" positionY="141" width="153" height="103"/>
+        <element name="Event_Total" positionX="-0" positionY="-10" width="128" height="73"/>
+        <element name="Item_Info" positionX="153" positionY="126" width="128" height="150"/>
+        <element name="Item_Event" positionX="162" positionY="135" width="128" height="75"/>
+        <element name="Item_Tag" positionX="171" positionY="144" width="128" height="75"/>
+        <element name="Item_Join" positionX="180" positionY="171" width="128" height="90"/>
+    </elements>
 </model>

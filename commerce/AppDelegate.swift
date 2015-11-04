@@ -12,9 +12,15 @@ import CoreData
 
 //Custom Swifts
 let rs_Strings: rsStrings? = rsStrings()
+let rs_Values: rsValues? = rsValues()
+var rs_C_Event: rsCEvent? = rsCEvent()
+
+//Test Class
+var test_Items: testItems? = testItems()
 
 //Custom Color Set
 var colorNavigation: UInt = 0xFF5722
+var colorDarkGray: UInt = 0x1A1A1A
 var colorGray: UInt = 0xAAAAAA
 var colorWhite: UInt = 0xFFFFFF
 

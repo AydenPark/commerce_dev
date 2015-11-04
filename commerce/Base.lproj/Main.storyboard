@@ -30,10 +30,9 @@
                         <viewControllerLayoutGuide type="bottom" id="kr8-jY-sui"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="aJq-DU-qlc">
-                        <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Title" id="j4a-Rw-cmk">
