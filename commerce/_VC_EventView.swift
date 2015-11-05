@@ -22,11 +22,13 @@ public class EventView: UIView {
         self.titleLabel.text = title
         self.titleLabel.textAlignment = .Center
         self.view.addSubview(titleLabel)
-        
+        let rows = ((count / 2) + (count % 2)) - 1
         for n in 0...count-1 {
             let tmpView = EventContentView()
             let width = frame.width/2 - 12
-            let height = (self.bounds.height - 48 - 16) / CGFloat(Int(count/2))
+
+            let height = (self.bounds.height - 48 - 16) / CGFloat(Int(count/2)) - CGFloat(8 * rows)
+            print(height)
             tmpView.frame = CGRectMake((8 - 4 * (CGFloat(n)%2)) + (CGFloat(frame.width)/2 * (CGFloat(n)%2)), 48 + (height * CGFloat(Int(n/2)) + (8 * CGFloat(Int(n/2)))), width, height)
             var contentView = EventContentView()
             contentView.initView(tmpView.frame.size, value: value[n])

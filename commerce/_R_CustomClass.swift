@@ -42,3 +42,7 @@ func UIColorFromRGB(rgbValue: UInt) -> UIColor {
         alpha: CGFloat(1.0)
     )
 }
+
+extension String {
+    var length: Int { return characters.count    }  // Swift 2.0
+}

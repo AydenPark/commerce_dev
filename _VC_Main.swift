@@ -104,6 +104,12 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                 eventScrollView.frame =  CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)
                 eventScrollView.scrollEnabled = true
                 
+                //상단 배너 뷰
+                var bannerView = UIImageView()
+                bannerView.frame = CGRectMake(0, 0, self.view.frame.width, 6/16*self.view.frame.width)
+                bannerView.backgroundColor = UIColor.whiteColor()
+                eventScrollView.addSubview(bannerView)
+                
                 //case 0 -> 홈 화면 -> Item_Event CoreData값 로드
                 let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 let context:NSManagedObjectContext = app.managedObjectContext
@@ -136,7 +142,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                             var eventView = EventView()
                             //카테고리 당 위치 = (개별 콘텐트 높이 * 콘텐트 줄 수) + (타이틀 영역 높이 * 현재 카테고리 순번)
                             //카테고리 당 영역 = (부모 뷰 너비, 개별 콘텐트 높이 * (카테고리에 포함된 아이템 갯수 / 2 + 카테고리에 포함된 아이템 갯수 % 2) + 타이틀 영역 높이
-                            eventView.frame = CGRectMake(0, (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height)) * CGFloat(n), self.view.frame.width, (content_height * CGFloat((results.count / 2) + (results.count % 2))) + CGFloat(event_title_height))
+                            eventView.frame = CGRectMake(0, bannerView.frame.height + 8 + (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height)) * CGFloat(n), self.view.frame.width, (content_height * CGFloat((results.count / 2) + (results.count % 2))) + CGFloat(event_title_height))
                             
                             total_contents_rows += ((results.count / 2) + (results.count % 2))
                             
@@ -148,7 +154,6 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                                 //현재 이벤트 진행중인 카테고리에 해당하는 아이템 검색
                                 let itemContext:NSManagedObjectContext = app.managedObjectContext
                                 let itemRequest: NSFetchRequest = NSFetchRequest(entityName: "Item_Info")
-                                print(iuid)
                                 itemRequest.predicate = NSPredicate(format: "(iuid = %@)", iuid)
                                 var error: NSError?
                                 var results: NSArray = []
@@ -163,22 +168,19 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                                     itemValue.append(tmpItem)
                                 }
                                 m += 1
-                            }                            
-                            
+                            }
                             eventView.initView(item.valueForKey("title") as! String, value: itemValue, count: results.count)
                             eventScrollView.addSubview(eventView)
                         }
                         n += 1
-                    }
-                    
+                    }                    
                 } catch let error as NSError {
                     // failure
                     print("Fetch failed: \(error.localizedDescription)")
                 }
-                eventScrollView.contentSize = CGSizeMake(self.view.frame.width, (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height) * CGFloat(event_count!)))
+                eventScrollView.contentSize = CGSizeMake(self.view.frame.width, bannerView.frame.height + (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height) * CGFloat(event_count!)))
                 
                 self.scrollView.addSubview(eventScrollView)
-                
             case 1:
                 let listView = UIView()
                 listView.frame = CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)

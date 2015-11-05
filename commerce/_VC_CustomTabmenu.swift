@@ -82,25 +82,25 @@ public class CustomTabmenu: UIView {
     public func selection(index: Int) {
         switch(index) {
         case 0:
-            self.homeSelect.backgroundColor = UIColorFromRGB(colorNavigation)
+            self.homeSelect.backgroundColor = UIColorFromRGB(colorDeepOrange)
             self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)
             self.tab2Select.backgroundColor = UIColorFromRGB(colorWhite)
             self.tab3Select.backgroundColor = UIColorFromRGB(colorWhite)
         case 1:
             self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab1Select.backgroundColor = UIColorFromRGB(colorNavigation)
+            self.tab1Select.backgroundColor = UIColorFromRGB(colorGreen)
             self.tab2Select.backgroundColor = UIColorFromRGB(colorWhite)
             self.tab3Select.backgroundColor = UIColorFromRGB(colorWhite)
         case 2:
             self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
             self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab2Select.backgroundColor = UIColorFromRGB(colorNavigation)
+            self.tab2Select.backgroundColor = UIColorFromRGB(colorYellow)
             self.tab3Select.backgroundColor = UIColorFromRGB(colorWhite)
         case 3:
             self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
             self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)
             self.tab2Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab3Select.backgroundColor = UIColorFromRGB(colorNavigation)
+            self.tab3Select.backgroundColor = UIColorFromRGB(colorpurple)
         default:
             self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
             self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)

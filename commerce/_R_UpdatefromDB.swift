@@ -13,6 +13,7 @@ import CoreData
 public class Items_DB {
     func updateData() {
         test_Items?.initData()
+        test_ItemsTag?.initData()
         test_ItemsEvent?.initData()
         test_ItemsJoin?.initData()
     }

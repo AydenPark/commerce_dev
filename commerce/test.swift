@@ -26,16 +26,10 @@ public class testItems {
             {
                 itemsContext.deleteObject(bas as! NSManagedObject)
             }
-            do {
-                try itemsContext.save()
-            } catch {
-                fatalError("Failure to save context: \(error)")
-            }
+            do { try itemsContext.save() }
+            catch { fatalError("Failure to save context: \(error)") }
             
-        } catch let error as NSError {
-            // failure
-            print("Fetch failed: \(error.localizedDescription)")
-        }
+        } catch let error as NSError { print("Fetch failed: \(error.localizedDescription)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -46,11 +40,8 @@ public class testItems {
         itemsData.origin = "7000"
         itemsData.image = "fr_potato"
 
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -61,11 +52,8 @@ public class testItems {
         itemsData.origin = "7000"
         itemsData.image = "fr_potato"
         
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -76,11 +64,8 @@ public class testItems {
         itemsData.origin = "7000"
         itemsData.image = "fr_potato"
         
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -91,11 +76,8 @@ public class testItems {
         itemsData.origin = "7000"
         itemsData.image = "fr_potato"
         
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -106,11 +88,8 @@ public class testItems {
         itemsData.origin = "7000"
         itemsData.image = "fr_potato"
         
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -121,11 +100,8 @@ public class testItems {
         itemsData.origin = "7000"
         itemsData.image = "fr_potato"
         
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -136,11 +112,8 @@ public class testItems {
         itemsData.origin = "7000"
         itemsData.image = "fr_potato"
         
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
@@ -151,14 +124,60 @@ public class testItems {
         itemsData.origin = "6000"
         itemsData.image = "fr_potato"
         
-        do {
-            try itemsContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try itemsContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
     }
 }
 
+public class testItemsTag {
+    func initData() {
+        let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        
+        let tagContext:NSManagedObjectContext = app.managedObjectContext
+        var tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        var tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        let deleteRequest = NSFetchRequest(entityName: "Item_Tag")
+        do {
+            let deleteList = try tagContext.executeFetchRequest(deleteRequest)
+            // success ...
+            for bas: AnyObject in deleteList
+            {
+                tagContext.deleteObject(bas as! NSManagedObject)
+            }
+            do { try tagContext.save() }
+            catch { fatalError("Failure to save context: \(error)") }
+            
+        } catch let error as NSError { print("Fetch failed: \(error.localizedDescription)") }
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "mt001"
+        tagData.name = "야채"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "mt002"
+        tagData.name = "과일"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "mt003"
+        tagData.name = "스페셜"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+    }
+}
 public class testItemsEvent {
     func initData() {
         let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -175,16 +194,10 @@ public class testItemsEvent {
             {
                 eventContext.deleteObject(bas as! NSManagedObject)
             }
-            do {
-                try eventContext.save()
-            } catch {
-                fatalError("Failure to save context: \(error)")
-            }
+            do { try eventContext.save() }
+            catch { fatalError("Failure to save context: \(error)") }
             
-        } catch let error as NSError {
-            // failure
-            print("Fetch failed: \(error.localizedDescription)")
-        }
+        } catch let error as NSError { print("Fetch failed: \(error.localizedDescription)") }
     
         eventDescription = NSEntityDescription.entityForName("Item_Event", inManagedObjectContext: eventContext)
         eventData = Item_Event(entity: eventDescription!, insertIntoManagedObjectContext: eventContext)
@@ -192,11 +205,8 @@ public class testItemsEvent {
         eventData.euid = "ev001"
         eventData.title = "특가상품"
         
-        do {
-            try eventContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try eventContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         eventDescription = NSEntityDescription.entityForName("Item_Event", inManagedObjectContext: eventContext)
         eventData = Item_Event(entity: eventDescription!, insertIntoManagedObjectContext: eventContext)
@@ -204,11 +214,8 @@ public class testItemsEvent {
         eventData.euid = "ev002"
         eventData.title = "인기상품"
         
-        do {
-            try eventContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try eventContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
     }
 }
 
@@ -228,16 +235,10 @@ public class testItemsJoin {
             {
                 joinContext.deleteObject(bas as! NSManagedObject)
             }
-            do {
-                try joinContext.save()
-            } catch {
-                fatalError("Failure to save context: \(error)")
-            }
+            do { try joinContext.save() }
+            catch { fatalError("Failure to save context: \(error)") }
             
-        } catch let error as NSError {
-            // failure
-            print("Fetch failed: \(error.localizedDescription)")
-        }
+        } catch let error as NSError { print("Fetch failed: \(error.localizedDescription)") }
         
         joinDescription = NSEntityDescription.entityForName("Item_Join", inManagedObjectContext: joinContext)
         joinData = Item_Join(entity: joinDescription!, insertIntoManagedObjectContext: joinContext)
@@ -245,11 +246,8 @@ public class testItemsJoin {
         joinData.euid = "ev001"
         joinData.iuid = "fr001"
         
-        do {
-            try joinContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try joinContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         joinDescription = NSEntityDescription.entityForName("Item_Join", inManagedObjectContext: joinContext)
         joinData = Item_Join(entity: joinDescription!, insertIntoManagedObjectContext: joinContext)
@@ -257,11 +255,8 @@ public class testItemsJoin {
         joinData.euid = "ev001"
         joinData.iuid = "fr003"
         
-        do {
-            try joinContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try joinContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         joinDescription = NSEntityDescription.entityForName("Item_Join", inManagedObjectContext: joinContext)
         joinData = Item_Join(entity: joinDescription!, insertIntoManagedObjectContext: joinContext)
@@ -269,11 +264,8 @@ public class testItemsJoin {
         joinData.euid = "ev002"
         joinData.iuid = "fr003"
         
-        do {
-            try joinContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try joinContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         joinDescription = NSEntityDescription.entityForName("Item_Join", inManagedObjectContext: joinContext)
         joinData = Item_Join(entity: joinDescription!, insertIntoManagedObjectContext: joinContext)
@@ -281,11 +273,8 @@ public class testItemsJoin {
         joinData.euid = "ev002"
         joinData.iuid = "vt001"
         
-        do {
-            try joinContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try joinContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         joinDescription = NSEntityDescription.entityForName("Item_Join", inManagedObjectContext: joinContext)
         joinData = Item_Join(entity: joinDescription!, insertIntoManagedObjectContext: joinContext)
@@ -293,11 +282,8 @@ public class testItemsJoin {
         joinData.euid = "ev002"
         joinData.iuid = "vt003"
         
-        do {
-            try joinContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
+        do { try joinContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
         
         joinDescription = NSEntityDescription.entityForName("Item_Join", inManagedObjectContext: joinContext)
         joinData = Item_Join(entity: joinDescription!, insertIntoManagedObjectContext: joinContext)
@@ -305,33 +291,7 @@ public class testItemsJoin {
         joinData.euid = "ev002"
         joinData.iuid = "vt004"
         
-        do {
-            try joinContext.save()
-        } catch {
-            fatalError("Failure to save context: \(error)")
-        }
-    }
-}
-
-public class testEvent {
-    
-    func initData() {
-        rs_C_Event?._total?.count = "2"
-        
-        rs_C_Event?._category?.count![0] = "2"
-        rs_C_Event?._category?.title![0] = "테스트1"
-        rs_C_Event?._category?.idx![0] = "0"
-        
-        rs_C_Event?._category?.count![1] = "4"
-        rs_C_Event?._category?.title![1] = "테스트2"
-        rs_C_Event?._category?.idx![1] = "1"
-        
-        rs_C_Event?._item?.iuid![0] = "fr001"
-        rs_C_Event?._item?.iuid![1] = "fr002"
-
-        rs_C_Event?._item?.iuid![2] = "vt001"
-        rs_C_Event?._item?.iuid![3] = "vt002"
-        rs_C_Event?._item?.iuid![4] = "vt003"
-        rs_C_Event?._item?.iuid![5] = "vt004"
+        do { try joinContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
     }
 }

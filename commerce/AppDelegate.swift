@@ -19,10 +19,15 @@ var rs_UpdateDB: Items_DB? = Items_DB()
 //Test Class
 var test_Items: testItems? = testItems()
 var test_ItemsEvent: testItemsEvent? = testItemsEvent()
+var test_ItemsTag: testItemsTag? = testItemsTag()
 var test_ItemsJoin: testItemsJoin? = testItemsJoin()
 
 //Custom Color Set
-var colorNavigation: UInt = 0xFF5722
+var colorNavigation: UInt = 0xFF5721
+var colorDeepOrange: UInt = 0xFF5721
+var colorGreen: UInt = 0x00AD0C
+var colorYellow: UInt = 0xFFDA00
+var colorpurple: UInt = 0x9500FF
 var colorDarkGray: UInt = 0x1A1A1A
 var colorGray: UInt = 0xAAAAAA
 var colorWhite: UInt = 0xFFFFFF
