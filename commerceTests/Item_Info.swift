@@ -2,7 +2,7 @@
 //  Item_Info.swift
 //  commerce
 //
-//  Created by jigwan on 2015. 11. 4..
+//  Created by jigwan on 2015. 11. 5..
 //  Copyright © 2015년 STRUCEL. All rights reserved.
 //
 

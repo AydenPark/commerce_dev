@@ -16,24 +16,6 @@ public class rsCItems {
     var _price: String?
 }
 
-public class rsCEvent {
-    struct total {
-        var count: String?
-    }
-    struct category {
-        var count: [String]?
-        var title: [String]?
-        var idx: [String]?
-    }
-    struct item {
-        var iuid: [String]?
-    }
-    
-    var _total: total?
-    var _category: category?
-    var _item: item?
-}
-
 func UIColorFromRGB(rgbValue: UInt) -> UIColor {
     return UIColor(
         red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,

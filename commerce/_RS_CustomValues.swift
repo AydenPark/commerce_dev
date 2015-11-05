@@ -13,9 +13,9 @@ public class rsStrings {
     let _main_searchbar_ph: String? = "품목 검색"
     
     let _tab_home_text: String? = "홈"
-    let _tab_tab1_text: String? = "야채"
-    let _tab_tab2_text: String? = "과일"
-    let _tab_tab3_text: String? = "스페셜"
+    let _tab_tab1_text: String? = "신선식품"
+    let _tab_tab2_text: String? = "기타식품"
+    let _tab_tab3_text: String? = "전용식품"
 }
 
 public class rsValues {

@@ -13,8 +13,8 @@ import CoreData
 //Custom Swifts
 let rs_Strings: rsStrings? = rsStrings()
 let rs_Values: rsValues? = rsValues()
-var rs_C_Event: rsCEvent? = rsCEvent()
-var rs_UpdateDB: Items_DB? = Items_DB()
+var pc_UpdateDB: Items_DB? = Items_DB()
+var pc_CHD: CoreDataHelper? = CoreDataHelper()
 
 //Test Class
 var test_Items: testItems? = testItems()

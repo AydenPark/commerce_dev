@@ -15,14 +15,14 @@
     </entity>
     <entity name="Item_Event" representedClassName="Item_Event" syncable="YES">
         <attribute name="euid" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Item_Info" representedClassName="Item_Info" syncable="YES">
         <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iuid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="origin" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="purchase" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="selling" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="item_event" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item_Event" syncable="YES"/>
         <relationship name="item_tag" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item_Tag" syncable="YES"/>
     </entity>

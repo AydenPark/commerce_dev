@@ -21,15 +21,15 @@ public class HomeView: UIView {
     
     public func initContents(count: Int) {
    
-        var titleView = UILabel()
-        titleView.frame = CGRectMake(0, 0, self.canvasView.frame.width, CGFloat((rs_Values?._text_area_height)!))
-        for n in 0...count {
-            var x_pos = 8 + Int(frame.width/2) * Int(n%2)
-            var y_pos = 8 + Int(frame.width/2) * Int(n/2)
-
-            self.contentView[n].frame = CGRectMake(CGFloat(x_pos), CGFloat(y_pos), frame.width/2-16, frame.width/2-16)
-            
-        }
+//        var titleView = UILabel()
+//        titleView.frame = CGRectMake(0, 0, self.canvasView.frame.width, CGFloat((rs_Values?._text_area_height)!))
+//        for n in 0...count {
+//            var x_pos = 8 + Int(frame.width/2) * Int(n%2)
+//            var y_pos = 8 + Int(frame.width/2) * Int(n/2)
+//
+//            self.contentView[n].frame = CGRectMake(CGFloat(x_pos), CGFloat(y_pos), frame.width/2-16, frame.width/2-16)
+//            
+//        }
     }
     
     public func initParts(count: Int) {

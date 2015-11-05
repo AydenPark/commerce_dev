@@ -74,9 +74,9 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidAppear(animated: Bool) {
         self.customTabmenu.selection(0)
-        initView()
+        pc_UpdateDB?.updateData()
         
-        rs_UpdateDB?.updateData()
+//x        initView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -124,6 +124,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                     // success ...
                     //현재 이벤트 진행중인 카테고리 갯수
                     event_count = results.count
+                    NSLog("event_count : %d", results.count)
                     //이벤트 euid 획득
                     var n = 0
                     for item in results {
@@ -138,7 +139,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                         
                         do {
                             results = try context.executeFetchRequest(joinRequest)
-
+                            NSLog("join_count : %d", results.count)
                             var eventView = EventView()
                             //카테고리 당 위치 = (개별 콘텐트 높이 * 콘텐트 줄 수) + (타이틀 영역 높이 * 현재 카테고리 순번)
                             //카테고리 당 영역 = (부모 뷰 너비, 개별 콘텐트 높이 * (카테고리에 포함된 아이템 갯수 / 2 + 카테고리에 포함된 아이템 갯수 % 2) + 타이틀 영역 높이
@@ -159,6 +160,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                                 var results: NSArray = []
                                 
                                 do {
+                                     NSLog("info_count : %d", results.count)
                                     results = try itemContext.executeFetchRequest(itemRequest)
                                     var tmpItem = rsCItems()
                                     tmpItem._name = results[0].valueForKey("name") as! String
@@ -178,8 +180,20 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                     // failure
                     print("Fetch failed: \(error.localizedDescription)")
                 }
-                eventScrollView.contentSize = CGSizeMake(self.view.frame.width, bannerView.frame.height + (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height) * CGFloat(event_count!)))
                 
+                if event_count == 0 {
+                    var noneView = UIView()
+                    noneView.frame = CGRectMake(0, bannerView.frame.height, self.view.frame.width, self.scrollView.frame.height - bannerView.frame.height)
+                    var noneLabel = UILabel()
+                    noneLabel.frame = CGRectMake(0, noneView.frame.height/2, noneView.frame.width, 20)
+                    noneLabel.text = "현재 이벤트중인 상품이 존재하지 않습니다."
+                    noneLabel.textAlignment = .Center
+                    noneView.addSubview(noneLabel)
+                    eventScrollView.addSubview(noneView)
+                    eventScrollView.contentSize = CGSizeMake(self.view.frame.width, bannerView.frame.height + noneView.frame.height)
+                } else {
+                    eventScrollView.contentSize = CGSizeMake(self.view.frame.width, bannerView.frame.height + (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height) * CGFloat(event_count!)))
+                }
                 self.scrollView.addSubview(eventScrollView)
             case 1:
                 let listView = UIView()

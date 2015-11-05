@@ -60,6 +60,7 @@ public class EventContentView: UIView {
         self.infoCanvas.addSubview(self.origin_price)
         
         var price_text = addComma(value._price!) + " 원"
+        print(canvasHeight)
         var price_attributedText = NSMutableAttributedString(string: price_text, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Bold", size: canvasHeight*0.5)!])
         price_attributedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue", size: 14.0)!, range: NSRange(location:price_text.length-1,length:1))
         self.price.frame = CGRectMake((self.infoCanvas.frame.width-16)*0.45 + 16, self.origin_price.frame.origin.y + self.origin_price.frame.height, (self.infoCanvas.frame.width-16)*0.55 - 16, canvasHeight*0.5)

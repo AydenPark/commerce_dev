@@ -11,7 +11,48 @@ import CoreData
 import UIKit
 
 public class testItems {
-    func initData() {
+    func initData() -> [NSDictionary] {
+        var eventData = NSDictionary()
+        var tagData = NSDictionary()
+        var itemsData = [NSDictionary]()
+        
+        eventData = ["euid" : ["ev001", "ev002"], "name" : ["특가상품", "인기상품"]]
+        tagData = ["tuid" : ["mt001", "st001"], "name" : ["신선식품", "과일"]]
+        itemsData.append(["iuid" : "fr001", "name" : "사과", "selling" : "5000", "purchase" : "7000", "image" : "img_apple", "tag" : tagData, "event" : eventData])
+        
+        eventData = ["euid" : [""], "name" : [""]]
+        tagData = ["tuid" : ["mt001", "st001"], "name" : ["신선식품", "과일"]]
+        itemsData.append(["iuid" : "fr002", "name" : "오렌지", "selling" : "5000", "purchase" : "7000", "image" : "img_orange", "tag" : tagData, "event" : eventData])
+        
+        eventData = ["euid" : ["ev001"], "name" : ["특가상품"]]
+        tagData = ["tuid" : ["mt001", "st001"], "name" : ["신선식품", "과일"]]
+        itemsData.append(["iuid" : "fr003", "name" : "단감", "selling" : "5000", "purchase" : "7000", "image" : "img_persimmon", "tag" : tagData, "event" : eventData])
+        
+        eventData = ["euid" : ["ev002"], "name" : ["인기상품"]]
+        tagData = ["tuid" : ["mt001", "st001"], "name" : ["신선식품", "과일"]]
+        itemsData.append(["iuid" : "fr004", "name" : "포도", "selling" : "5000", "purchase" : "7000", "image" : "img_grape", "tag" : tagData, "event" : eventData])
+        
+        eventData = ["euid" : ["ev002"], "name" : ["인기상품"]]
+        tagData = ["tuid" : ["mt001", "st002"], "name" : ["신선식품", "채소"]]
+        itemsData.append(["iuid" : "vt001", "name" : "고구마", "selling" : "5000", "purchase" : "7000", "image" : "img_spotato", "tag" : tagData, "event" : eventData])
+        
+        eventData = ["euid" : ["ev001", "ev002"], "name" : ["특가상품", "인기상품"]]
+        tagData = ["tuid" : ["mt001", "st002"], "name" : ["신선식품", "채소"]]
+        itemsData.append(["iuid" : "vt002", "name" : "감자", "selling" : "5000", "purchase" : "7000", "image" : "img_potato", "tag" : tagData, "event" : eventData])
+        
+        eventData = ["euid" : ["ev001"], "name" : ["특가상품"]]
+        tagData = ["tuid" : ["mt001", "st002"], "name" : ["신선식품", "채소"]]
+        itemsData.append(["iuid" : "vt003", "name" : "당근", "selling" : "5000", "purchase" : "7000", "image" : "img_carrot", "tag" : tagData, "event" : eventData])
+        
+        eventData = ["euid" : ["ev001"], "name" : ["특가상품"]]
+        tagData = ["tuid" : ["mt001", "st002"], "name" : ["신선식품", "채소"]]
+        itemsData.append(["iuid" : "vt004", "name" : "오이", "selling" : "5000", "purchase" : "7000", "image" : "img_cucumber", "tag" : tagData, "event" : eventData])
+        
+        return itemsData
+    }
+}
+        /*
+        
         let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         
         let itemsContext:NSManagedObjectContext = app.managedObjectContext
@@ -125,9 +166,7 @@ public class testItems {
         itemsData.image = "fr_potato"
         
         do { try itemsContext.save() }
-        catch { fatalError("Failure to save context: \(error)") }
-    }
-}
+        catch { fatalError("Failure to save context: \(error)") }*/
 
 public class testItemsTag {
     func initData() {
@@ -154,7 +193,7 @@ public class testItemsTag {
         tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
         
         tagData.tuid = "mt001"
-        tagData.name = "야채"
+        tagData.name = "신선식품"
         
         do { try tagContext.save() }
         catch { fatalError("Failure to save context: \(error)") }
@@ -163,7 +202,7 @@ public class testItemsTag {
         tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
         
         tagData.tuid = "mt002"
-        tagData.name = "과일"
+        tagData.name = "기타식품"
         
         do { try tagContext.save() }
         catch { fatalError("Failure to save context: \(error)") }
@@ -172,7 +211,65 @@ public class testItemsTag {
         tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
         
         tagData.tuid = "mt003"
-        tagData.name = "스페셜"
+        tagData.name = "전용식품"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "st001"
+        tagData.name = "과일"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "st002"
+        tagData.name = "채소"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "st003"
+        tagData.name = "축산"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "st004"
+        tagData.name = "건어물"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "st005"
+        tagData.name = "수산물"
+        
+        do { try tagContext.save() }
+        catch { fatalError("Failure to save context: \(error)") }
+
+        
+        tagDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagContext)
+        tagData = Item_Tag(entity: tagDescription!, insertIntoManagedObjectContext: tagContext)
+        
+        tagData.tuid = "st006"
+        tagData.name = "잡곡"
         
         do { try tagContext.save() }
         catch { fatalError("Failure to save context: \(error)") }
@@ -203,7 +300,7 @@ public class testItemsEvent {
         eventData = Item_Event(entity: eventDescription!, insertIntoManagedObjectContext: eventContext)
 
         eventData.euid = "ev001"
-        eventData.title = "특가상품"
+        eventData.name = "특가상품"
         
         do { try eventContext.save() }
         catch { fatalError("Failure to save context: \(error)") }
@@ -212,7 +309,7 @@ public class testItemsEvent {
         eventData = Item_Event(entity: eventDescription!, insertIntoManagedObjectContext: eventContext)
         
         eventData.euid = "ev002"
-        eventData.title = "인기상품"
+        eventData.name = "인기상품"
         
         do { try eventContext.save() }
         catch { fatalError("Failure to save context: \(error)") }
@@ -243,8 +340,8 @@ public class testItemsJoin {
         joinDescription = NSEntityDescription.entityForName("Item_Join", inManagedObjectContext: joinContext)
         joinData = Item_Join(entity: joinDescription!, insertIntoManagedObjectContext: joinContext)
         
-        joinData.euid = "ev001"
         joinData.iuid = "fr001"
+        joinData.euid = "ev001"
         
         do { try joinContext.save() }
         catch { fatalError("Failure to save context: \(error)") }
