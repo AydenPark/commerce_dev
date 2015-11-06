@@ -16,5 +16,6 @@ extension Item_Event {
 
     @NSManaged var euid: String?
     @NSManaged var name: String?
+    @NSManaged var item_info: Item_Info?
 
 }

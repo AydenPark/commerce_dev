@@ -48,16 +48,21 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         customView.addSubview(searchBarView)
         self.navigationItem.titleView = customView
 
+        //update datas from DB
+        pc_UpdateDB?.updateEventsData()
+        pc_UpdateDB?.updateTagsData()
+        pc_UpdateDB?.updateItemsData()
+        
         //custom tabbar
         self.customTabmenu.frame = CGRectMake(0, customView.frame.height + 20, self.view.frame.width, 45)
         self.customTabmenu.initView(self.view.frame.size)
         self.view.addSubview(self.customTabmenu)
         
         //init custom tabbar button event
-        self.customTabmenu.homeButton.addTarget(self, action: "homeButtonTapped", forControlEvents: .TouchUpInside)
-        self.customTabmenu.tab1Button.addTarget(self, action: "tab1ButtonTapped", forControlEvents: .TouchUpInside)
-        self.customTabmenu.tab2Button.addTarget(self, action: "tab2ButtonTapped", forControlEvents: .TouchUpInside)
-        self.customTabmenu.tab3Button.addTarget(self, action: "tab3ButtonTapped", forControlEvents: .TouchUpInside)
+        self.customTabmenu.homeButton.addTarget(self, action: Selector("homeButtonTapped:"), forControlEvents: .TouchUpInside)
+        for n in 0...self.customTabmenu.tabButton.count-1 {
+            self.customTabmenu.tabButton[n].addTarget(self, action: Selector("tabButtonTapped:"), forControlEvents: .TouchUpInside)
+        }
         
         //scrollview -> content view
         self.scrollView = UIScrollView(frame: CGRectMake(0, customView.frame.height + 20 + self.customTabmenu.frame.height, self.view.frame.width, self.view.frame.height - (customView.frame.height + 20 + self.customTabmenu.frame.height)))
@@ -73,10 +78,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.customTabmenu.selection(0)
-        pc_UpdateDB?.updateData()
-        
-//x        initView()
+        initView()
     }
     
     override func didReceiveMemoryWarning() {
@@ -86,7 +88,7 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
     
     func initView() {
         //pageSize => 메뉴 탭 갯수
-        let pageSize = 4
+        let pageSize = (rs_Strings?._tab_text.count)! + 1
         let scrWidth = self.view.frame.width, scrHeight = self.view.frame.height
         scrollView.contentSize = CGSizeMake(CGFloat(pageSize) * scrWidth, 0)
         
@@ -97,8 +99,8 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                 //ScrollView 생성
                 var event_count:Int?
                 var total_contents_rows:Int = 0
-                var content_height = 4/3 * self.view.frame.width/2
-                var event_title_height = 48
+                var content_height = 3/2 * self.view.frame.width/2
+                var event_title_height = 64
                 
                 var eventScrollView = UIScrollView()
                 eventScrollView.frame =  CGRectMake(CGFloat(i) * scrWidth, 0, self.view.frame.width , self.scrollView.frame.height)
@@ -114,74 +116,67 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                 let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 let context:NSManagedObjectContext = app.managedObjectContext
                 let request: NSFetchRequest = NSFetchRequest(entityName: "Item_Event")
-                request.returnsObjectsAsFaults = false
+                request.predicate = NSPredicate(format: "item_info == nil")
                 
-                var error: NSError?
-                var results: NSArray = []
-                
-                do {
-                    results = try context.executeFetchRequest(request)
-                    // success ...
-                    //현재 이벤트 진행중인 카테고리 갯수
-                    event_count = results.count
-                    NSLog("event_count : %d", results.count)
-                    //이벤트 euid 획득
-                    var n = 0
-                    for item in results {
-                        var euid = item.valueForKey("euid")! as! String
-                        //현재 이벤트 진행중인 카테고리에 해당하는 아이템 검색
-                        let joinContext:NSManagedObjectContext = app.managedObjectContext
-                        let joinRequest: NSFetchRequest = NSFetchRequest(entityName: "Item_Join")
-                        joinRequest.predicate = NSPredicate(format: "(euid = %@)", euid)
-                        
+                let filter_result = (try! context.executeFetchRequest(request)) as! [Item_Event]
+                event_count = filter_result.count
+                NSLog("event_count : %d", filter_result.count)
+                var n = 0
+                //이벤트 갯수 만큼 루프
+                for result in filter_result {
+                    var itemValue = [rsCItems]()
+                    var euid = result.euid!
+                    if euid.isEmpty {
+                        event_count! -= 1
+                    } else {
+                        let itemsContext:NSManagedObjectContext = app.managedObjectContext
+                        var itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
+                        var itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
+                        let request: NSFetchRequest = NSFetchRequest(entityName: "Item_Info")
+                        request.returnsObjectsAsFaults = false
+
                         var error: NSError?
                         var results: NSArray = []
-                        
                         do {
-                            results = try context.executeFetchRequest(joinRequest)
-                            NSLog("join_count : %d", results.count)
-                            var eventView = EventView()
-                            //카테고리 당 위치 = (개별 콘텐트 높이 * 콘텐트 줄 수) + (타이틀 영역 높이 * 현재 카테고리 순번)
-                            //카테고리 당 영역 = (부모 뷰 너비, 개별 콘텐트 높이 * (카테고리에 포함된 아이템 갯수 / 2 + 카테고리에 포함된 아이템 갯수 % 2) + 타이틀 영역 높이
-                            eventView.frame = CGRectMake(0, bannerView.frame.height + 8 + (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height)) * CGFloat(n), self.view.frame.width, (content_height * CGFloat((results.count / 2) + (results.count % 2))) + CGFloat(event_title_height))
-                            
-                            total_contents_rows += ((results.count / 2) + (results.count % 2))
-                            
-                            var itemValue = [rsCItems]()
-                            var m = 0
+                            results = try itemsContext.executeFetchRequest(request)
+                            // success ...
+                            //모든 아이템 정보 조회
                             for item in results {
-                                var iuid = item.valueForKey("iuid") as! String
-                                //iuid를 이용하여 아이템 코어 데이터로 부터 아이템 정보 획득
-                                //현재 이벤트 진행중인 카테고리에 해당하는 아이템 검색
-                                let itemContext:NSManagedObjectContext = app.managedObjectContext
-                                let itemRequest: NSFetchRequest = NSFetchRequest(entityName: "Item_Info")
-                                itemRequest.predicate = NSPredicate(format: "(iuid = %@)", iuid)
-                                var error: NSError?
-                                var results: NSArray = []
-                                
-                                do {
-                                     NSLog("info_count : %d", results.count)
-                                    results = try itemContext.executeFetchRequest(itemRequest)
-                                    var tmpItem = rsCItems()
-                                    tmpItem._name = results[0].valueForKey("name") as! String
-                                    tmpItem._image = results[0].valueForKey("image") as! String
-                                    tmpItem._price = results[0].valueForKey("price") as! String
-                                    tmpItem._origin = results[0].valueForKey("origin") as! String
-                                    itemValue.append(tmpItem)
+                                let tmp = item as! Item_Info
+                                for event in tmp.item_event! {
+                                    //현재 이벤트 진행중인 카테고리에 해당하는 아이템 검색
+                                    if euid.isEqual(event.valueForKey("euid")) {
+                                        var tmpItem = rsCItems()
+                                        tmpItem._name = item.valueForKey("name") as! String
+                                        tmpItem._image = item.valueForKey("image") as! String
+                                        tmpItem._selling = item.valueForKey("selling") as! String
+                                        tmpItem._purchase = item.valueForKey("purchase") as! String
+                                        itemValue.append(tmpItem)
+                                    }
                                 }
-                                m += 1
                             }
-                            eventView.initView(item.valueForKey("title") as! String, value: itemValue, count: results.count)
-                            eventScrollView.addSubview(eventView)
+                        } catch let error as NSError {
+                            // failure
+                            print("Fetch failed: \(error.localizedDescription)")
                         }
+                        
+                        NSLog("event_item_count : %d", itemValue.count)
+                        
+                        var eventView = EventView()
+                        var viewHeight = (content_height * CGFloat((itemValue.count / 2) + (itemValue.count % 2))) + (8 * CGFloat((itemValue.count / 2) + (itemValue.count % 2))) + CGFloat(event_title_height) + 8
+                        var y_Position = ((content_height + 8) * CGFloat(total_contents_rows)) + bannerView.frame.height + 8 + ((CGFloat(event_title_height) + 8 ) * CGFloat(n))
+                        eventView.frame = CGRectMake(0, y_Position, self.view.frame.width, viewHeight)
+                        total_contents_rows += ((itemValue.count / 2) + (itemValue.count % 2))
+                        
+                        eventView.initView(result.valueForKey("name") as! String, value: itemValue, count: itemValue.count)
+                        eventScrollView.addSubview(eventView)
+                        
                         n += 1
-                    }                    
-                } catch let error as NSError {
-                    // failure
-                    print("Fetch failed: \(error.localizedDescription)")
+                    }
                 }
                 
                 if event_count == 0 {
+                    NSLog("load none message")
                     var noneView = UIView()
                     noneView.frame = CGRectMake(0, bannerView.frame.height, self.view.frame.width, self.scrollView.frame.height - bannerView.frame.height)
                     var noneLabel = UILabel()
@@ -192,8 +187,9 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
                     eventScrollView.addSubview(noneView)
                     eventScrollView.contentSize = CGSizeMake(self.view.frame.width, bannerView.frame.height + noneView.frame.height)
                 } else {
-                    eventScrollView.contentSize = CGSizeMake(self.view.frame.width, bannerView.frame.height + (content_height * CGFloat(total_contents_rows)) + (CGFloat(event_title_height) * CGFloat(event_count!)))
+                    eventScrollView.contentSize = CGSizeMake(self.view.frame.width, bannerView.frame.height + 8 + ((content_height + 8) * CGFloat(total_contents_rows)) + (CGFloat(event_title_height + 8) * CGFloat(event_count!)))
                 }
+                NSLog("home view loading complete")
                 self.scrollView.addSubview(eventScrollView)
             case 1:
                 let listView = UIView()
@@ -232,24 +228,13 @@ class MainViewController: UIViewController, UIScrollViewDelegate {
         self.customTabmenu.selection(currentPage)
     }
     
-    func homeButtonTapped() {
+    func homeButtonTapped(sender: UIButton!) {
         self.customTabmenu.selection(0)
         self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
-    func tab1ButtonTapped() {
-        self.customTabmenu.selection(1)
-        self.scrollView.setContentOffset(CGPoint(x: self.view.frame.maxX ,y: 0), animated: true)
+    func tabButtonTapped(sender: UIButton!) {
+        self.customTabmenu.selection(sender.tag-99)
+        self.scrollView.setContentOffset(CGPoint(x: self.view.frame.maxX * CGFloat(sender.tag-99) ,y: 0), animated: true)
     }
-    
-    func tab2ButtonTapped() {
-        self.customTabmenu.selection(2)
-        self.scrollView.setContentOffset(CGPoint(x: self.view.frame.maxX*2, y: 0), animated: true)
-    }
-    
-    func tab3ButtonTapped() {
-        self.customTabmenu.selection(3)
-        self.scrollView.setContentOffset(CGPoint(x: self.view.frame.maxX*3, y: 0), animated: true)
-    }
-
 }

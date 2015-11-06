@@ -13,15 +13,9 @@ public class CustomTabmenu: UIView {
     var view = UIView()
     
     var homeButton = UIButton()
-    var tab1Button = UIButton()
-    var tab2Button = UIButton()
-    var tab3Button = UIButton()
-    
+    var tabButton = [UIButton()]
     var homeSelect = UIView()
-    var tab1Select = UIView()
-    var tab2Select = UIView()
-    var tab3Select = UIView()
-    
+    var tabSelect = [UIView()]
     var indicator = UIView()
     
     public func initView(frame:CGSize) {
@@ -29,48 +23,34 @@ public class CustomTabmenu: UIView {
         self.view.backgroundColor = UIColor.whiteColor()
         
         self.homeButton = UIButton(type: .System)
-        self.homeButton.frame = CGRectMake(0, 0, frame.width*0.25, 42)
+        self.homeButton.frame = CGRectMake(0, 0, frame.width*CGFloat(1.0/Double((rs_Strings?._tab_text.count)!+1)), 42)
         self.homeButton.setTitle(rs_Strings?._tab_home_text, forState: .Normal)
         self.homeButton.setTitleColor(UIColorFromRGB(colorDarkGray), forState: .Normal)
         self.homeButton.titleLabel!.font =  UIFont(name: "HelveticaNeue-Medium", size: 18)
-        
-        self.tab1Button = UIButton(type: .System)
-        self.tab1Button.frame = CGRectMake(frame.width*0.25, 0, frame.width*0.25, 42)
-        self.tab1Button.setTitle(rs_Strings?._tab_tab1_text, forState: .Normal)
-        self.tab1Button.setTitleColor(UIColorFromRGB(colorDarkGray), forState: .Normal)
-        self.tab1Button.titleLabel!.font =  UIFont(name: "HelveticaNeue-Medium", size: 18)
-        
-        self.tab2Button = UIButton(type: .System)
-        self.tab2Button.frame = CGRectMake(frame.width*0.25 * 2, 0, frame.width*0.25, 42)
-        self.tab2Button.setTitle(rs_Strings?._tab_tab2_text, forState: .Normal)
-        self.tab2Button.setTitleColor(UIColorFromRGB(colorDarkGray), forState: .Normal)
-        self.tab2Button.titleLabel!.font =  UIFont(name: "HelveticaNeue-Medium", size: 18)
-        
-        self.tab3Button = UIButton(type: .System)
-        self.tab3Button.frame = CGRectMake(frame.width*0.25 * 3, 0, frame.width*0.25, 42)
-        self.tab3Button.setTitle(rs_Strings?._tab_tab3_text, forState: .Normal)
-        self.tab3Button.setTitleColor(UIColorFromRGB(colorDarkGray), forState: .Normal)
-        self.tab3Button.titleLabel!.font =  UIFont(name: "HelveticaNeue-Medium", size: 18)
-        
         self.view.addSubview(self.homeButton)
-        self.view.addSubview(self.tab1Button)
-        self.view.addSubview(self.tab2Button)
-        self.view.addSubview(self.tab3Button)
         
-        self.homeSelect.frame = CGRectMake(0, 40, frame.width*0.25, 4)
-        self.tab1Select.frame = CGRectMake(frame.width*0.25, 40, frame.width*0.25, 4)
-        self.tab2Select.frame = CGRectMake(frame.width*0.25 * 2, 40, frame.width*0.25, 4)
-        self.tab3Select.frame = CGRectMake(frame.width*0.25 * 3, 40, frame.width*0.25, 4)
-        
+        self.homeSelect.frame = CGRectMake(0, 40, frame.width*CGFloat(1.0/Double((rs_Strings?._tab_text.count)!+1)), 4)
         self.homeSelect.backgroundColor = UIColorFromRGB(colorNavigation)
-        self.tab1Select.backgroundColor = UIColorFromRGB(colorNavigation)
-        self.tab2Select.backgroundColor = UIColorFromRGB(colorNavigation)
-        self.tab3Select.backgroundColor = UIColorFromRGB(colorNavigation)
-        
         self.view.addSubview(self.homeSelect)
-        self.view.addSubview(self.tab1Select)
-        self.view.addSubview(self.tab2Select)
-        self.view.addSubview(self.tab3Select)
+        
+        if (rs_Strings?._tab_text.count)! > 0 {
+            for n in 0...(rs_Strings?._tab_text.count)!-1 {
+                var button = UIButton(type: .System)
+                button.frame = CGRectMake(frame.width*CGFloat(1.0/Double((rs_Strings?._tab_text.count)!+1)) * CGFloat(n+1), 0, frame.width*CGFloat(1.0/Double((rs_Strings?._tab_text.count)!+1)), 42)
+                button.setTitle((rs_Strings?._tab_text[n]!)!, forState: .Normal)
+                button.setTitleColor(UIColorFromRGB(colorDarkGray), forState: .Normal)
+                button.tag = 100 + n
+                button.titleLabel!.font =  UIFont(name: "HelveticaNeue-Medium", size: 18)
+                self.tabButton.append(button)
+                self.view.addSubview(self.tabButton[n+1])
+                var select = UIView()
+                select.frame = CGRectMake(frame.width*CGFloat(1.0/Double((rs_Strings?._tab_text.count)!+1)) * CGFloat(n+1), 40, frame.width*CGFloat(1.0/Double((rs_Strings?._tab_text.count)!+1)), 4)
+                select.tag = 200 + n
+                select.backgroundColor = UIColorFromRGB(colorWhite)
+                self.tabSelect.append(select)
+                self.view.addSubview(self.tabSelect[n+1])
+            }
+        }
         
         self.indicator.frame = CGRectMake(0, 44, frame.width, 1)
         self.indicator.backgroundColor = UIColorFromRGB(colorGray)
@@ -83,29 +63,22 @@ public class CustomTabmenu: UIView {
         switch(index) {
         case 0:
             self.homeSelect.backgroundColor = UIColorFromRGB(colorDeepOrange)
-            self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab2Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab3Select.backgroundColor = UIColorFromRGB(colorWhite)
-        case 1:
-            self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab1Select.backgroundColor = UIColorFromRGB(colorGreen)
-            self.tab2Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab3Select.backgroundColor = UIColorFromRGB(colorWhite)
-        case 2:
-            self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab2Select.backgroundColor = UIColorFromRGB(colorYellow)
-            self.tab3Select.backgroundColor = UIColorFromRGB(colorWhite)
-        case 3:
-            self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab2Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab3Select.backgroundColor = UIColorFromRGB(colorpurple)
+            if (rs_Strings?._tab_text.count)! > 0 {
+                for n in 1...(rs_Strings?._tab_text.count)! {
+                    self.tabSelect[n].backgroundColor = UIColorFromRGB(colorWhite)
+                }
+            }
         default:
             self.homeSelect.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab1Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab2Select.backgroundColor = UIColorFromRGB(colorWhite)
-            self.tab3Select.backgroundColor = UIColorFromRGB(colorWhite)
+            for n in 1...(rs_Strings?._tab_text.count)! {
+                if n == index {
+                    self.tabSelect[n].backgroundColor = UIColorFromRGB(colorDeepOrange)
+                } else {
+                    self.tabSelect[n].backgroundColor = UIColorFromRGB(colorWhite)
+                }
+                
+            }
+            
         }
     }
     

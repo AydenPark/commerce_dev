@@ -11,19 +11,19 @@ import UIKit
 import CoreData
 
 public class Items_DB {
-    func updateData() {
-        var ItemsDataDic = [NSDictionary]()
+    func updateItemsData() {
+        var itemsDataDic = [NSDictionary]()
         let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let itemsContext:NSManagedObjectContext = app.managedObjectContext
         var itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
         var itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
         pc_CHD?.deleteContext("Item_Info", context: itemsContext)
         
-        ItemsDataDic = (test_Items?.initData())!
+        itemsDataDic = (test_Items?.initData())!
         
-        NSLog("ItemsData_Rev_From_DB : %d", ItemsDataDic.count)
+        NSLog("ItemsData_Rev_From_DB : %d", itemsDataDic.count)
         
-        for item in ItemsDataDic {
+        for item in itemsDataDic {
             itemsDescription = NSEntityDescription.entityForName("Item_Info", inManagedObjectContext: itemsContext)
             itemsData = Item_Info(entity: itemsDescription!, insertIntoManagedObjectContext: itemsContext)
             
@@ -71,5 +71,55 @@ public class Items_DB {
 //            // failure
 //            print("Fetch failed: \(error.localizedDescription)")
 //        }
+    }
+    
+    func updateEventsData() {
+        var eventsDataDic = NSDictionary()
+        let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let eventsContext:NSManagedObjectContext = app.managedObjectContext
+        var eventsDescription = NSEntityDescription.entityForName("Item_Event", inManagedObjectContext: eventsContext)
+        var eventsData = Item_Event(entity: eventsDescription!, insertIntoManagedObjectContext: eventsContext)
+        pc_CHD?.deleteContext("Item_Event", context: eventsContext)
+        
+        eventsDataDic = (test_ItemsEvent?.initData())!
+        
+        NSLog("EventsData_Rev_From_DB : %d", eventsDataDic["euid"]!.count)
+        
+        for n in 0...eventsDataDic["euid"]!.count-1 {
+            eventsDescription = NSEntityDescription.entityForName("Item_Event", inManagedObjectContext: eventsContext)
+            eventsData = Item_Event(entity: eventsDescription!, insertIntoManagedObjectContext: eventsContext)
+            eventsData.euid = eventsDataDic["euid"]![n] as! String
+            eventsData.name = eventsDataDic["name"]![n] as! String
+            pc_CHD?.saveContext(eventsContext)
+        }
+    }
+    
+    func updateTagsData() {
+        var tagsDataDic = NSDictionary()
+        let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let tagsContext:NSManagedObjectContext = app.managedObjectContext
+        var tagsDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagsContext)
+        var tagsData = Item_Tag(entity: tagsDescription!, insertIntoManagedObjectContext: tagsContext)
+        pc_CHD?.deleteContext("Item_Tag", context: tagsContext)
+        
+        tagsDataDic = (test_ItemsTag?.initData())!
+        
+        NSLog("TagsData_Rev_From_DB : %d", tagsDataDic["tuid"]!.count)
+        
+        for n in 0...tagsDataDic["tuid"]!.count-1 {
+            tagsDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagsContext)
+            tagsData = Item_Tag(entity: tagsDescription!, insertIntoManagedObjectContext: tagsContext)
+            tagsData.tuid = tagsDataDic["tuid"]![n] as! String
+            tagsData.name = tagsDataDic["name"]![n] as! String
+            pc_CHD?.saveContext(tagsContext)
+        }
+        
+        //탭바 라벨 추가(탭 아이디가 mt로 시작되는 태그만)
+        var fReq: NSFetchRequest = NSFetchRequest(entityName: "Item_Tag")
+        fReq.predicate = NSPredicate(format:"tuid CONTAINS 'mt'")
+        for result in (try! tagsContext.executeFetchRequest(fReq)) as! [Item_Tag] {
+            rs_Strings?._tab_text.append(result.name)
+        }
+        
     }
 }
