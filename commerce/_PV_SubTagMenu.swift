@@ -17,20 +17,20 @@ public class SubTagMenu: UIView {
     public func initView(value:[String], height:CGFloat, viewTag:Int) {
         self.view.frame = self.bounds
         
-        var tabButton = UIButton(type: .System)
+        let tabButton = UIButton(type: .System)
         tabButton.frame = CGRectMake(0, 0, self.view.frame.width / 3, height)
         tabButton.setTitle("전체", forState: .Normal)
         tabButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         tabButton.tag = viewTag+0
         self.button.append(tabButton)
         self.view.addSubview(tabButton)
-        
-        for n in 0...value.count-1 {
-            var tabButton = UIButton(type: .System)
-            tabButton.frame = CGRectMake((self.view.frame.width / 3) * CGFloat((n+1) % 3), height * CGFloat((n+1) / 3), self.view.frame.width / 3, height)
+        //0은 임의로 만든 전체에 해당하는 값이기 때문에 1부터 시작
+        for n in 1...value.count-1 {
+            let tabButton = UIButton(type: .System)
+            tabButton.frame = CGRectMake((self.view.frame.width / 3) * CGFloat((n) % 3), height * CGFloat((n) / 3), self.view.frame.width / 3, height)
             tabButton.setTitle(MatchingNameViaTUID(value[n]), forState: .Normal)
             tabButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
-            tabButton.tag = viewTag+n+1
+            tabButton.tag = viewTag+n
             self.button.append(tabButton)
             self.view.addSubview(tabButton)
         }
@@ -40,12 +40,11 @@ public class SubTagMenu: UIView {
     private func MatchingNameViaTUID(tuid: String) -> String{
         let app: AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let tagsContext:NSManagedObjectContext = app.managedObjectContext
-        var tagsDescription = NSEntityDescription.entityForName("Item_Tag", inManagedObjectContext: tagsContext)
-        var fReq: NSFetchRequest = NSFetchRequest(entityName: "Item_Tag")
+        let fReq: NSFetchRequest = NSFetchRequest(entityName: "Item_Tag")
         
         fReq.predicate = NSPredicate(format:"tuid == %@", tuid)
         let results = (try! tagsContext.executeFetchRequest(fReq)) as! [Item_Tag]
 
         return results[0].name!
-    }        
+    }
 }

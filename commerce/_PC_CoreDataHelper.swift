@@ -13,7 +13,6 @@ import UIKit
 class CoreDataHelper: NSObject{
     // save NSManagedObjectContext
     func saveContext (context: NSManagedObjectContext) {
-        var error: NSError? = nil
         if context.hasChanges {
             do {
                 try context.save()

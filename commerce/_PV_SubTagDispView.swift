@@ -17,18 +17,13 @@ public class SubTagDisp: UIView {
     
     public func initView(value:[rsCItems], count:Int) {
         self.view.frame = self.bounds
-
-        let rows = ((count / 2) + (count % 2)) - 1
+        
         let width = frame.width/2 - 12
         let height = (self.bounds.height) / CGFloat((count / 2) + (count % 2))
         
         for n in 0...count-1 {
-            let tmpView = ItemContentView()
-            
-            var contentView = ItemContentView()
+            let contentView = ItemContentView()
             contentView.frame = CGRectMake((8 - 4 * (CGFloat(n)%2)) + (CGFloat(frame.width)/2 * (CGFloat(n)%2)), (height * CGFloat(Int(n/2))), width, height)
-            print(value[n]._name)
-            print(value[n]._purchase)
             contentView.initView(contentView.frame.size, value: value[n])
             contentView.tag = n+1
             let gesture = UITapGestureRecognizer(target: self, action: Selector("Tapped:"))
@@ -40,7 +35,16 @@ public class SubTagDisp: UIView {
     }
     
     func Tapped(sender:UITapGestureRecognizer) {
-        NSLog("tapped Item' iuid : %@", self.itemView[(sender.view?.tag)!].ItemInfo._iuid!)
-        NSLog("tapped Item' name : %@", self.itemView[(sender.view?.tag)!].ItemInfo._name!)
+        NSLog("tapped subItem' iuid : %@", self.itemView[(sender.view?.tag)!].ItemInfo._iuid!)
+        NSLog("tapped subItem' name : %@", self.itemView[(sender.view?.tag)!].ItemInfo._name!)
+   
+        var delegate:SubTagDispDelegate
+        delegate = ItemDetailViewController()
+        delegate.tappedItemInfo(self.itemView[(sender.view?.tag)!].ItemInfo)
+        
+        let rootViewController = self.window!.rootViewController as! UINavigationController
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let detailViewController = mainStoryboard.instantiateViewControllerWithIdentifier("detailView") as UIViewController
+        rootViewController.pushViewController(detailViewController, animated: true)
     }
 }

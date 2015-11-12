@@ -2,7 +2,7 @@
 //  Item_Info+CoreDataProperties.swift
 //  commerce
 //
-//  Created by jigwan on 2015. 11. 5..
+//  Created by jigwan on 2015. 11. 9..
 //  Copyright © 2015년 STRUCEL. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -23,12 +23,12 @@ extension Item_Info {
     @NSManaged var item_tag: NSSet?
 
     func addEvent(values: Item_Event) {
-        var items = self.mutableSetValueForKey("item_event");
+        let items = self.mutableSetValueForKey("item_event");
         items.addObject(values)
     }
     
     func addTag(values: Item_Tag) {
-        var items = self.mutableSetValueForKey("item_tag");
+        let items = self.mutableSetValueForKey("item_tag");
         items.addObject(values)
     }
 }

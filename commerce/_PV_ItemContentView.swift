@@ -27,10 +27,16 @@ public class ItemContentView: UIView {
         self.addSubview(self.view)
         
         self.image.frame = CGRectMake(0, 0, frame.width, frame.width)
+        self.image.image = UIImage(named: value._image!)
         self.image.backgroundColor = UIColor.grayColor()
         self.view.addSubview(self.image)
         
-        self.name.frame = CGRectMake(0, self.image.frame.height, frame.width, (frame.height - self.image.frame.height) * CGFloat(0.55))
+        let spaceView = UIView(frame: CGRectMake(0, self.image.frame.origin.y + self.image.frame.height, self.view.frame.width, 1))
+        spaceView.backgroundColor = UIColorFromRGB(g_rs_Values.colorLightGray)
+        self.view.addSubview(spaceView)
+        
+        self.name.frame = CGRectMake(8, self.image.frame.height, frame.width - 16, (frame.height - self.image.frame.height) * CGFloat(0.55))
+        self.name.numberOfLines = 0
         self.name.text = value._name
         self.name.textColor = UIColor.blackColor()
         self.name.textAlignment = .Center
@@ -41,39 +47,39 @@ public class ItemContentView: UIView {
         self.view.addSubview(self.infoCanvas)
         
         if((Float(value._purchase!)) != nil) {
-            var dc_value = (NSString(format:"%.f",100 - (Float(value._selling!)! / Float(value._purchase!)! * 100)) as String) + "%"
-            var dc_attributedText = NSMutableAttributedString(string: dc_value, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Medium", size: canvasHeight-8)!])
+            let dc_value = (NSString(format:"%.f",100 - (Float(value._selling!)! / Float(value._purchase!)! * 100)) as String) + "%"
+            let dc_attributedText = NSMutableAttributedString(string: dc_value, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Medium", size: canvasHeight-8)!])
             dc_attributedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue-Bold", size: 18.0)!, range: NSRange(location:2,length:1))
             dc_attributedText.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: NSRange(location: 0, length: 3))
             
-            self.discount.frame = CGRectMake(8, 0, (self.infoCanvas.frame.width-16)*0.40, infoCanvas.frame.height)
+            self.discount.frame = CGRectMake(8, 0, (self.infoCanvas.frame.width-16)*0.40, self.infoCanvas.frame.height)
             self.discount.attributedText = dc_attributedText
             self.discount.textAlignment = .Left
             self.infoCanvas.addSubview(self.discount)
 
-            var purchase_text = addComma(value._purchase!) + "원"
-            var purchase_attributedText = NSMutableAttributedString(string: purchase_text, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue", size: canvasHeight*0.35)!])
+            let purchase_text = addComma(value._purchase!) + "원"
+            let purchase_attributedText = NSMutableAttributedString(string: purchase_text, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue", size: canvasHeight*0.35)!])
             purchase_attributedText.addAttribute(NSStrikethroughStyleAttributeName , value:1, range: NSRange(location: 0, length: purchase_text.length))
             
-            self.purchase.frame = CGRectMake(self.discount.frame.origin.x + self.discount.frame.width, 0, (self.infoCanvas.frame.width-16)*0.60 - 16, infoCanvas.frame.height*0.35)
+            self.purchase.frame = CGRectMake(self.discount.frame.origin.x + self.discount.frame.width, 0, (self.infoCanvas.frame.width-16) - (self.discount.frame.origin.x + self.discount.frame.width), self.infoCanvas.frame.height*0.35)
             self.purchase.attributedText = purchase_attributedText
             self.purchase.textColor = UIColor.grayColor()
             self.purchase.textAlignment = .Left
             self.infoCanvas.addSubview(self.purchase)
             
-            var selling_text = addComma(value._selling!) + " 원"
-            var selling_attributedText = NSMutableAttributedString(string: selling_text, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Bold", size: canvasHeight*0.5)!])
+            let selling_text = addComma(value._selling!) + "원"
+            let selling_attributedText = NSMutableAttributedString(string: selling_text, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Bold", size: canvasHeight*0.5)!])
             selling_attributedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue", size: 14.0)!, range: NSRange(location:selling_text.length-1,length:1))
-            self.selling.frame = CGRectMake(self.discount.frame.origin.x + self.discount.frame.width, self.purchase.frame.origin.y + self.purchase.frame.height + 4, (self.infoCanvas.frame.width-16)*0.60 - 16, infoCanvas.frame.height*0.5)
+            self.selling.frame = CGRectMake(self.discount.frame.origin.x + self.discount.frame.width, self.purchase.frame.origin.y + self.purchase.frame.height + 4, (self.infoCanvas.frame.width-16) - (self.discount.frame.origin.x + self.discount.frame.width), self.infoCanvas.frame.height*0.5)
             self.selling.attributedText = selling_attributedText
             self.selling.textColor = UIColor.blackColor()
             self.selling.textAlignment = .Left
             self.infoCanvas.addSubview(self.selling)
         } else {
-            var selling_text = addComma(value._selling!) + " 원"
-            var selling_attributedText = NSMutableAttributedString(string: selling_text, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Bold", size: canvasHeight*0.7)!])
+            let selling_text = addComma(value._selling!) + "원"
+            let selling_attributedText = NSMutableAttributedString(string: selling_text, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue-Bold", size: canvasHeight*0.7)!])
             selling_attributedText.addAttribute(NSFontAttributeName, value: UIFont(name: "HelveticaNeue", size: 18.0)!, range: NSRange(location:selling_text.length-1,length:1))
-            self.selling.frame = CGRectMake(0, 0, self.infoCanvas.frame.width, infoCanvas.frame.height)
+            self.selling.frame = CGRectMake(0, 0, self.infoCanvas.frame.width, self.infoCanvas.frame.height)
             self.selling.attributedText = selling_attributedText
             self.selling.textColor = UIColor.blackColor()
             self.selling.textAlignment = .Center
@@ -86,11 +92,13 @@ public class ItemContentView: UIView {
     func addComma(str:String) -> String{
         let formatter = NSNumberFormatter()
         formatter.numberStyle = .CurrencyStyle
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 1
         formatter.currencySymbol = ""
         formatter.groupingSeparator = ","
         formatter.groupingSize = 3
         if(str != "") {
-            return formatter.stringFromNumber(Double(str)!)!
+            return formatter.stringFromNumber(Int(str)!)!
         }else{
             return ""
         }

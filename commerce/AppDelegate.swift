@@ -10,38 +10,35 @@ import UIKit
 import SystemConfiguration.CaptiveNetwork
 import CoreData
 
+//영구저장소
+let prefs:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+
 //Custom Swifts
-let rs_Strings: rsStrings? = rsStrings()
-let rs_Values: rsValues? = rsValues()
-var pc_UpdateDB: Items_DB? = Items_DB()
-var pc_CHD: CoreDataHelper? = CoreDataHelper()
+let g_rs_Strings: rsStrings = rsStrings()
+let g_rs_Values: rsValues = rsValues()
+var g_pc_UpdateDB: Items_DB = Items_DB()
+var g_pc_CHD: CoreDataHelper = CoreDataHelper()
+var g_userInfo: User = User()
 
 //Test Class
-var test_Items: testItems? = testItems()
-var test_ItemsEvent: testItemsEvent? = testItemsEvent()
-var test_ItemsTag: testItemsTag? = testItemsTag()
+var g_test_Items: testItems? = testItems()
+var g_test_ItemsEvent: testItemsEvent? = testItemsEvent()
+var g_test_ItemsTag: testItemsTag? = testItemsTag()
 
-//Custom Color Set
-var colorNavigation: UInt = 0xFF5721
-var colorDeepOrange: UInt = 0xFF5721
-var colorGreen: UInt = 0x00AD0C
-var colorYellow: UInt = 0xFFDA00
-var colorpurple: UInt = 0x9500FF
-var colorDarkGray: UInt = 0x1A1A1A
-var colorGray: UInt = 0xAAAAAA
-var colorWhite: UInt = 0xFFFFFF
 
+
+//Global Various
+var g_selectedItemInfo:rsCItems = rsCItems()
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         // NavigationBar모양 설정
-        UINavigationBar.appearance().barTintColor = UIColorFromRGB(colorNavigation)
-        var attributes = [
+        UINavigationBar.appearance().barTintColor = UIColorFromRGB(g_rs_Values.colorNavigation)
+        let attributes = [
             NSForegroundColorAttributeName: UIColor.whiteColor(),
             NSFontAttributeName: UIFont(name: "HelveticaNeue-Bold", size: 20)!
         ]
@@ -50,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         // UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(UIColorFromRGB(colorNavigation)), forBarMetrics: UIBarMetrics.Default)
         UINavigationBar.appearance().shadowImage = UIImage()
+                
         return true
     }
 
@@ -105,7 +103,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
             dict[NSLocalizedFailureReasonErrorKey] = failureReason
 
-            dict[NSUnderlyingErrorKey] = error as! NSError
+            dict[NSUnderlyingErrorKey] = error as NSError
             let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
             // Replace this with code to handle the error appropriately.
             // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
