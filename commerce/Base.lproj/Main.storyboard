@@ -6,10 +6,10 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Log In View Controller-->
         <scene sceneID="e1M-7H-5ZE">
             <objects>
-                <viewController id="h7E-29-OdP" customClass="ViewController" customModule="commerce" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="h7E-29-OdP" customClass="LogInViewController" customModule="commerce" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aEc-VF-nMP"/>
                         <viewControllerLayoutGuide type="bottom" id="GOc-jF-Ddz"/>
@@ -84,7 +84,7 @@
                         <barButtonItem key="leftBarButtonItem" image="btn_back" id="WYO-XY-vZF"/>
                         <barButtonItem key="rightBarButtonItem" image="btn_cart" id="ck6-gh-5e3">
                             <connections>
-                                <segue destination="jxb-7O-RpO" kind="presentation" animates="NO" id="haF-TL-byq"/>
+                                <segue destination="jxb-7O-RpO" kind="presentation" id="haF-TL-byq"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -94,7 +94,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RTI-RC-ovT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="171" y="-185"/>
+            <point key="canvasLocation" x="-591" y="-191"/>
         </scene>
         <!--Title-->
         <scene sceneID="J5Q-Zg-8Rj">
@@ -112,10 +112,15 @@
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Title" id="j4a-Rw-cmk">
-                        <barButtonItem key="leftBarButtonItem" image="btn_setting" id="ga8-EQ-IXM"/>
+                        <barButtonItem key="leftBarButtonItem" image="btn_setting" id="ga8-EQ-IXM">
+                            <connections>
+                                <action selector="leftBarButtonTapped:" destination="SN4-Yw-ejK" id="YUe-dI-9wf"/>
+                                <segue destination="fNi-wJ-BxZ" kind="presentation" id="euf-8l-gUt"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="btn_cart" id="aEb-Ob-EdR">
                             <connections>
-                                <segue destination="jxb-7O-RpO" kind="presentation" animates="NO" id="nI7-vi-E2O"/>
+                                <segue destination="jxb-7O-RpO" kind="presentation" id="nI7-vi-E2O"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -555,7 +560,7 @@
                             <constraint firstItem="nih-WT-UgN" firstAttribute="leading" secondItem="uq6-yB-SZW" secondAttribute="leading" constant="16" id="wcL-4A-a27"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="title" id="W3O-mI-fQU">
+                    <navigationItem key="navigationItem" title="Title" id="W3O-mI-fQU">
                         <barButtonItem key="rightBarButtonItem" image="btn_cancel" id="e5K-wo-BDo"/>
                     </navigationItem>
                     <connections>
@@ -588,7 +593,7 @@
                         <barButtonItem key="leftBarButtonItem" image="btn_back" id="MUR-P4-e1K"/>
                         <barButtonItem key="rightBarButtonItem" image="btn_cart" id="1sX-tq-7Df">
                             <connections>
-                                <segue destination="jxb-7O-RpO" kind="presentation" animates="NO" id="HFv-a1-DvI"/>
+                                <segue destination="jxb-7O-RpO" kind="presentation" id="HFv-a1-DvI"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -599,6 +604,102 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aJo-lR-kQW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="925" y="528"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="xzZ-l8-GMs">
+            <objects>
+                <navigationController id="fNi-wJ-BxZ" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="tPl-27-QDv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="f5V-58-yUt" kind="relationship" relationship="rootViewController" id="2aM-bp-80c"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KGm-nL-u9v" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="620" y="1263"/>
+        </scene>
+        <!--Title-->
+        <scene sceneID="Bnj-id-dlR">
+            <objects>
+                <tableViewController automaticallyAdjustsScrollViewInsets="NO" clearsSelectionOnViewWillAppear="NO" id="f5V-58-yUt" customClass="MenuTableViewController" customModule="commerce" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" autoresizesSubviews="NO" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="static" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="hAS-aT-ct3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <sections>
+                            <tableViewSection id="vhO-fb-c2Z">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="206" id="KrX-Rg-TgV">
+                                        <rect key="frame" x="0.0" y="35" width="600" height="206"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KrX-Rg-TgV" id="LUt-5J-GiT">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="205"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="회원 정보" id="acz-VL-pU2">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="lpS-it-hjh">
+                                        <rect key="frame" x="0.0" y="292" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lpS-it-hjh" id="GAD-wd-Zqo">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="ndY-AR-EWP">
+                                        <rect key="frame" x="0.0" y="336" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ndY-AR-EWP" id="G2o-GY-FbQ">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="주소 정보" id="p2C-od-DrB">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="MgS-Ca-i2s">
+                                        <rect key="frame" x="0.0" y="431" width="600" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MgS-Ca-i2s" id="ogq-Lx-VIv">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="59"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <animations/>
+                                        </tableViewCellContentView>
+                                        <animations/>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="f5V-58-yUt" id="GU0-b8-HYa"/>
+                            <outlet property="delegate" destination="f5V-58-yUt" id="l9M-Mf-ibe"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="2dh-x3-SbJ">
+                        <barButtonItem key="rightBarButtonItem" image="btn_cancel" id="xLx-1b-2Pw"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="navItem" destination="2dh-x3-SbJ" id="Ptb-1G-eHe"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CEH-p3-XTf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1309" y="1263"/>
         </scene>
     </scenes>
     <resources>
@@ -613,6 +714,6 @@
         <image name="btn_uncheck" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="nI7-vi-E2O"/>
+        <segue reference="haF-TL-byq"/>
     </inferredMetricsTieBreakers>
 </document>

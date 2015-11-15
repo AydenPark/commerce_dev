@@ -85,7 +85,6 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
                 let fReq: NSFetchRequest = NSFetchRequest(entityName: "Item_Info")
                 fReq.predicate = NSPredicate(format:"iuid == %@", item.valueForKey("iuid") as! String)
                 for result in (try! itemsContext.executeFetchRequest(fReq)) as! [Item_Info] {
-                    print(result.name)
                     self.itemNames.append(result.name!)
                     self.itemImages.append(result.image!)
                     self.itemPrices.append(result.selling!)

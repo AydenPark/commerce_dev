@@ -25,10 +25,9 @@ var g_test_Items: testItems? = testItems()
 var g_test_ItemsEvent: testItemsEvent? = testItemsEvent()
 var g_test_ItemsTag: testItemsTag? = testItemsTag()
 
-
-
 //Global Various
 var g_selectedItemInfo:rsCItems = rsCItems()
+var g_userAddress:String = String()
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -47,7 +46,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = UIColor.whiteColor()
         // UINavigationBar.appearance().setBackgroundImage(UIImage.imageWithColor(UIColorFromRGB(colorNavigation)), forBarMetrics: UIBarMetrics.Default)
         UINavigationBar.appearance().shadowImage = UIImage()
-                
+        
+//        prefs.setBool(true, forKey: "FirstLaunch")
+//        prefs.synchronize()
         return true
     }
 

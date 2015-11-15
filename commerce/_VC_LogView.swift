@@ -8,19 +8,35 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegate, UIWebViewDelegate {
+class LogInViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegate, UIWebViewDelegate, AddressDelegate{
     
     private var pageControl: UIPageControl!
     private var scrollView: UIScrollView!
     private var contentView: UIView!
 
+    //SubViews Page1
+    let subContentLabel = UILabel()
+    let nameTextField = UITextField()
+    let phoneTextField = UITextField()
+    let addressTextField = UITextField()
+    let addressTextField2 = UITextField()
+    let searchButton = UIButton(type: .System)
+    let nextButton = UIButton(type: .System)
+
+    //SubViews Page2
+    let startButton = UIButton(type: .System)
+    let backButton = UIButton(type: .System)
+    let confirmView = UIView()
+    
+    let bgnView = UIView()
     var pageSize = 2
     var nextButtonY: CGFloat!
     var agreeCheck = false
     
     var userName: String! = ""
     var userPhone: String! = ""
-    var userAddress: String! = ""
+    var userAddress1: String! = ""
+    var userAddress2: String! = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,11 +49,20 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         self.scrollView.showsHorizontalScrollIndicator = false;
         self.scrollView.showsVerticalScrollIndicator = false
         self.scrollView.pagingEnabled = true
-        self.scrollView.directionalLockEnabled = true
         self.scrollView.delegate = self
         self.contentView.addSubview(self.scrollView)
         
-        initView()
+        let scrWidth = self.contentView.frame.width
+        self.pageControl = UIPageControl(frame: CGRectMake(0, self.view.frame.maxY-50, scrWidth, 50))
+        self.pageControl.backgroundColor = UIColor.clearColor()
+        self.pageControl.numberOfPages = self.pageSize
+        self.pageControl.currentPage = 0
+        self.pageControl.userInteractionEnabled = false
+        self.pageControl.currentPageIndicatorTintColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
+        self.pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
+        
+        self.view.addSubview(self.pageControl)
+        initView(0)
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,145 +78,171 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
     
     func initView(index: Int = 0) {
         let scrWidth = self.contentView.frame.width
-        self.scrollView.contentSize = CGSizeMake(CGFloat(pageSize) * scrWidth, 0)
+        self.scrollView.contentSize = CGSizeMake(scrWidth, 0)
         if index == 0 {
-            let subContentLabel = UILabel(frame: CGRectMake(CGFloat(index) * scrWidth, 0, scrWidth, 56))
+            self.subContentLabel.frame = CGRectMake(CGFloat(index) * scrWidth, 0, scrWidth, 56)
             let attributedText = NSMutableAttributedString(string: g_rs_Strings._tutorial_sub_content1!, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue", size: 16)!])
-            subContentLabel.attributedText = attributedText
-            subContentLabel.textColor = UIColor.darkTextColor()
-            subContentLabel.textAlignment = .Center
-            subContentLabel.numberOfLines = 0
-            self.scrollView.addSubview(subContentLabel)
+            self.subContentLabel.attributedText = attributedText
+            self.subContentLabel.textColor = UIColor.darkTextColor()
+            self.subContentLabel.textAlignment = .Center
+            self.subContentLabel.numberOfLines = 0
+            self.scrollView.addSubview(self.subContentLabel)
             
-            let nameTextField = UITextField(frame: CGRectMake(16, subContentLabel.frame.origin.y + subContentLabel.frame.height + 16, self.contentView.frame.width - 32, 48))
-            nameTextField.placeholder = g_rs_Strings._tutorial_name_tf
-            nameTextField.layer.cornerRadius = 0.1 * nameTextField.bounds.size.height
-            nameTextField.backgroundColor = UIColor.groupTableViewBackgroundColor()
-            nameTextField.addTarget(self, action: "textFieldEditing:", forControlEvents: UIControlEvents.EditingDidBegin)
-            nameTextField.addTarget(self, action: "textFieldChanging:", forControlEvents: UIControlEvents.EditingChanged)
-            nameTextField.tag = 1
-            nameTextField.delegate = self
-            nameTextField.setTextLeftPadding(16)
-            self.scrollView.addSubview(nameTextField)
+            self.nameTextField.frame = CGRectMake(16, self.subContentLabel.frame.origin.y + self.subContentLabel.frame.height + 16, self.contentView.frame.width - 32, 48)
+            self.nameTextField.placeholder = g_rs_Strings._tutorial_name_tf
+            self.nameTextField.layer.cornerRadius = 0.1 * self.nameTextField.bounds.size.height
+            self.nameTextField.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            self.nameTextField.addTarget(self, action: "textFieldEditing:", forControlEvents: UIControlEvents.EditingDidBegin)
+            self.nameTextField.addTarget(self, action: "textFieldChanging:", forControlEvents: UIControlEvents.EditingChanged)
+            self.nameTextField.tag = 1
+            self.nameTextField.delegate = self
+            self.nameTextField.setTextLeftPadding(16)
+            self.scrollView.addSubview(self.nameTextField)
             
-            let phoneTextField = UITextField(frame: CGRectMake(16, nameTextField.frame.origin.y + nameTextField.frame.height + 8, self.contentView.frame.width - 32, 48))
-            phoneTextField.placeholder = g_rs_Strings._tutorial_phone_tf
-            phoneTextField.layer.cornerRadius = 0.1 * nameTextField.bounds.size.height
-            phoneTextField.backgroundColor = UIColor.groupTableViewBackgroundColor()
-            phoneTextField.keyboardType = UIKeyboardType.PhonePad
-            phoneTextField.addTarget(self, action: "textFieldEditing:", forControlEvents: UIControlEvents.EditingDidBegin)
-            phoneTextField.addTarget(self, action: "textFieldChanging:", forControlEvents: UIControlEvents.EditingChanged)
-            phoneTextField.tag = 2
-            phoneTextField.setTextLeftPadding(16)
-            self.scrollView.addSubview(phoneTextField)
+            self.phoneTextField.frame = CGRectMake(16, self.nameTextField.frame.origin.y + self.nameTextField.frame.height + 8, self.contentView.frame.width - 32, 48)
+            self.phoneTextField.placeholder = g_rs_Strings._tutorial_phone_tf
+            self.phoneTextField.layer.cornerRadius = 0.1 * self.nameTextField.bounds.size.height
+            self.phoneTextField.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            self.phoneTextField.keyboardType = UIKeyboardType.PhonePad
+            self.phoneTextField.addTarget(self, action: "textFieldEditing:", forControlEvents: UIControlEvents.EditingDidBegin)
+            self.phoneTextField.addTarget(self, action: "textFieldChanging:", forControlEvents: UIControlEvents.EditingChanged)
+            self.phoneTextField.tag = 2
+            self.phoneTextField.setTextLeftPadding(16)
+            self.scrollView.addSubview(self.phoneTextField)
             
-            let addressTextField = UITextField(frame: CGRectMake(16, phoneTextField.frame.origin.y + phoneTextField.frame.height + 8, self.contentView.frame.width - 112, 48))
-            addressTextField.placeholder = g_rs_Strings._tutorial_address_tf
-            addressTextField.layer.cornerRadius = 0.1 * nameTextField.bounds.size.height
-            addressTextField.backgroundColor = UIColor.groupTableViewBackgroundColor()
-            addressTextField.enabled = false
-            addressTextField.delegate = self
-            addressTextField.setTextLeftPadding(16)
-            self.scrollView.addSubview(addressTextField)
+            self.addressTextField.frame = CGRectMake(16, self.phoneTextField.frame.origin.y + self.phoneTextField.frame.height + 8, self.contentView.frame.width - 112, 48)
+            self.addressTextField.placeholder = g_rs_Strings._tutorial_address_tf
+            self.addressTextField.layer.cornerRadius = 0.1 * self.nameTextField.bounds.size.height
+            self.addressTextField.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            self.addressTextField.enabled = false
+            self.addressTextField.text = self.userAddress1
+            self.addressTextField.delegate = self
+            self.addressTextField.setTextLeftPadding(16)
+            self.scrollView.addSubview(self.addressTextField)
             
-            let searchButton = UIButton(type: .System)
-            searchButton.frame = CGRectMake(addressTextField.frame.origin.x + addressTextField.frame.width + 8, phoneTextField.frame.origin.y + phoneTextField.frame.height + 8, 72, 48)
-            searchButton.setTitle("검색", forState: .Normal)
-            searchButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-            searchButton.layer.cornerRadius = 0.1 * nameTextField.bounds.size.height
-            searchButton.backgroundColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
-            searchButton.addTarget(self, action: Selector("searchButtonTapped:"), forControlEvents: .TouchUpInside)
-            self.scrollView.addSubview(searchButton)
+            self.searchButton.frame = CGRectMake(self.addressTextField.frame.origin.x + self.addressTextField.frame.width + 8, self.phoneTextField.frame.origin.y + self.phoneTextField.frame.height + 8, 72, 48)
+            self.searchButton.setTitle("검색", forState: .Normal)
+            self.searchButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            self.searchButton.layer.cornerRadius = 0.1 * self.nameTextField.bounds.size.height
+            self.searchButton.backgroundColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
+            self.searchButton.addTarget(self, action: Selector("searchButtonTapped:"), forControlEvents: .TouchUpInside)
+            self.scrollView.addSubview(self.searchButton)
 
-            let addressTextField2 = UITextField(frame: CGRectMake(16, addressTextField.frame.origin.y + addressTextField.frame.height + 8, self.contentView.frame.width - 32, 48))
-            addressTextField2.layer.cornerRadius = 0.1 * nameTextField.bounds.size.height
-            addressTextField2.backgroundColor = UIColor.groupTableViewBackgroundColor()
-            addressTextField2.enabled = false
-            addressTextField2.setTextLeftPadding(16)
-            self.scrollView.addSubview(addressTextField2)
+            self.addressTextField2.frame = CGRectMake(16, self.addressTextField.frame.origin.y + self.addressTextField.frame.height + 8, self.contentView.frame.width - 32, 48)
+            self.addressTextField2.layer.cornerRadius = 0.1 * self.nameTextField.bounds.size.height
+            self.addressTextField2.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            self.addressTextField2.addTarget(self, action: "textFieldEditing:", forControlEvents: UIControlEvents.EditingDidBegin)
+            self.addressTextField2.addTarget(self, action: "textFieldChanging:", forControlEvents: UIControlEvents.EditingChanged)
+            self.addressTextField2.enabled = true
+            self.addressTextField2.tag = 3
+            self.addressTextField2.setTextLeftPadding(16)
+            self.scrollView.addSubview(self.addressTextField2)
             
-            let nextButton = UIButton(type: .System)
-            let buttonY1 = (addressTextField.frame.origin.y + addressTextField.frame.height) + (self.contentView.frame.height - (addressTextField.frame.origin.y + addressTextField.frame.height))/2
+            let buttonY1 = (self.addressTextField.frame.origin.y + self.addressTextField.frame.height) + (self.contentView.frame.height - (self.addressTextField.frame.origin.y + self.addressTextField.frame.height))/2
             let buttonY2 = self.contentView.frame.height - 120
-            nextButtonY = buttonY1 > buttonY2 ? buttonY1 : buttonY2
-            nextButton.frame = CGRectMake(self.contentView.frame.width * 0.2, nextButtonY, self.contentView.frame.width * 0.6, 48)
-            nextButton.setTitle("다음", forState: .Normal)
-            nextButton.layer.cornerRadius = 0.3 * nextButton.bounds.size.height
-            nextButton.tintColor = UIColor.whiteColor()
-            nextButton.backgroundColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
-            nextButton.addTarget(self, action: Selector("nextButtonTapped:"), forControlEvents: .TouchUpInside)
-            self.scrollView.addSubview(nextButton)
+            self.nextButtonY = buttonY1 > buttonY2 ? buttonY1 : buttonY2
+            self.nextButton.frame = CGRectMake(self.contentView.frame.width * 0.2, self.nextButtonY, self.contentView.frame.width * 0.6, 48)
+            self.nextButton.setTitle("다음", forState: .Normal)
+            self.nextButton.layer.cornerRadius = 0.3 * self.nextButton.bounds.size.height
+            self.nextButton.tintColor = UIColor.whiteColor()
+            self.nextButton.backgroundColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
+            self.nextButton.addTarget(self, action: Selector("nextButtonTapped:"), forControlEvents: .TouchUpInside)
+            self.scrollView.addSubview(self.nextButton)
         } else if index == 1 {
-            let subContentLabel = UILabel(frame: CGRectMake(CGFloat(index) * scrWidth, 0, scrWidth, 56))
+            self.subContentLabel.frame = CGRectMake(CGFloat(index) * scrWidth, 0, scrWidth, 56)
             let attributedText = NSMutableAttributedString(string: g_rs_Strings._tutorial_sub_content2!, attributes: [NSFontAttributeName:UIFont(name: "HelveticaNeue", size: 16)!])
-            subContentLabel.attributedText = attributedText
-            subContentLabel.textColor = UIColor.darkTextColor()
-            subContentLabel.textAlignment = .Center
-            subContentLabel.numberOfLines = 0
-            self.scrollView.addSubview(subContentLabel)
+            self.subContentLabel.attributedText = attributedText
+            self.subContentLabel.textColor = UIColor.darkTextColor()
+            self.subContentLabel.textAlignment = .Center
+            self.subContentLabel.numberOfLines = 0
+            self.scrollView.addSubview(self.subContentLabel)
             
-            let startButton = UIButton(type: .System)
-            startButton.frame = CGRectMake(CGFloat(index) * scrWidth + self.contentView.frame.width * 0.2, nextButtonY, self.contentView.frame.width * 0.6, 48)
-            startButton.setTitle("이용하기", forState: .Normal)
-            startButton.layer.cornerRadius = 0.3 * startButton.bounds.size.height
-            startButton.tintColor = UIColor.whiteColor()
-            startButton.backgroundColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
-            startButton.addTarget(self, action: Selector("startButtonTapped:"), forControlEvents: .TouchUpInside)
-            self.scrollView.addSubview(startButton)
+            self.startButton.frame = CGRectMake(CGFloat(index) * scrWidth + self.contentView.frame.width * 0.2, self.nextButtonY, self.contentView.frame.width * 0.6, 48)
+            self.startButton.setTitle("이용하기", forState: .Normal)
+            self.startButton.layer.cornerRadius = 0.3 * self.startButton.bounds.size.height
+            self.startButton.tintColor = UIColor.whiteColor()
+            self.startButton.backgroundColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
+            self.startButton.addTarget(self, action: Selector("startButtonTapped:"), forControlEvents: .TouchUpInside)
+            self.scrollView.addSubview(self.startButton)
             
-            let confirmView = UIView(frame: CGRectMake(CGFloat(index) * scrWidth + 16, subContentLabel.frame.maxY+8, self.contentView.frame.width - 32, (startButton.frame.minY - subContentLabel.frame.maxY) - 24))
-            confirmView.layer.cornerRadius = 0.3 * startButton.bounds.size.height
-            confirmView.layer.borderColor = UIColor.groupTableViewBackgroundColor().CGColor
-            confirmView.layer.borderWidth = 1
-            confirmView.backgroundColor = UIColor.groupTableViewBackgroundColor()
+            self.backButton.frame = CGRectMake(CGFloat(index) * scrWidth + 8, self.nextButtonY + 11, 26, 26)
+            self.backButton.setImage(UIImage(named: "btn_back"), forState: .Normal)
+            self.backButton.tintColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
+            self.backButton.addTarget(self, action: Selector("backButtonTapped:"), forControlEvents: .TouchUpInside)
+            self.scrollView.addSubview(self.backButton)
             
-            let inforVIew = UIView(frame: CGRectMake(0, 0, confirmView.frame.width, confirmView.frame.height - 52))
+            self.confirmView.frame = CGRectMake(CGFloat(index) * scrWidth + 16, self.subContentLabel.frame.maxY+8, self.contentView.frame.width - 32, (self.startButton.frame.minY - self.subContentLabel.frame.maxY) - 24)
+            self.confirmView.layer.cornerRadius = 0.3 * self.startButton.bounds.size.height
+            self.confirmView.layer.borderColor = UIColor.groupTableViewBackgroundColor().CGColor
+            self.confirmView.layer.borderWidth = 1
+            self.confirmView.backgroundColor = UIColor.groupTableViewBackgroundColor()
             
-            let nameLabel = UILabel(frame: CGRectMake(16, 0, confirmView.frame.width - 32, inforVIew.frame.height*0.3))
+            let inforVIew = UIView(frame: CGRectMake(0, 0, self.confirmView.frame.width, self.confirmView.frame.height - 52))
+            
+            let nameLabel = UILabel(frame: CGRectMake(16, 0, self.confirmView.frame.width - 32, inforVIew.frame.height*0.3))
             nameLabel.text = "이름 : " + self.userName
             inforVIew.addSubview(nameLabel)
             
-            let phoneLabel = UILabel(frame: CGRectMake(16, inforVIew.frame.height*0.3, confirmView.frame.width - 32, inforVIew.frame.height*0.3))
+            let phoneLabel = UILabel(frame: CGRectMake(16, inforVIew.frame.height*0.3, self.confirmView.frame.width - 32, inforVIew.frame.height*0.3))
             phoneLabel.text = "연락처 : " + self.userPhone
             inforVIew.addSubview(phoneLabel)
             
-            let addressLabel = UILabel(frame: CGRectMake(16, inforVIew.frame.height*0.6, confirmView.frame.width - 32, inforVIew.frame.height*0.3))
-            addressLabel.text = "주소 : " + self.userAddress
+            let addressLabel = UILabel(frame: CGRectMake(16, inforVIew.frame.height*0.6, self.confirmView.frame.width - 32, inforVIew.frame.height*0.3))
+            addressLabel.text = "주소 : " + self.userAddress1 + "\n" + self.userAddress2
+            addressLabel.numberOfLines = 0
             inforVIew.addSubview(addressLabel)
             
-            confirmView.addSubview(inforVIew)
+            self.confirmView.addSubview(inforVIew)
             
             let agree = UIButton(type: .Custom)
-            agree.frame = CGRectMake(0, confirmView.frame.height - 52, confirmView.frame.width, 36)
+            agree.frame = CGRectMake(0, self.confirmView.frame.height - 52, self.confirmView.frame.width, 36)
             agree.setImage(UIImage(named: "btn_uncheck"), forState: .Normal)
             agree.setTitle("이용약관 및 개인정보 활용 동의", forState: .Normal)
             agree.setTitleColor(UIColorFromRGB(g_rs_Values.colorDeepOrange), forState: .Normal)
             agree.addTarget(self, action: Selector("checkButtonTapped:"), forControlEvents: .TouchUpInside)
-            confirmView.addSubview(agree)
+            self.confirmView.addSubview(agree)
             
-            self.scrollView.addSubview(confirmView)
+            self.scrollView.addSubview(self.confirmView)
         }
         
         self.contentView.addSubview(self.scrollView)
+    }
+    
+    func dismissView(index: Int = 0) {
+        if index == 0 {
+            self.subContentLabel.removeFromSuperview()
+            self.nameTextField.removeFromSuperview()
+            self.phoneTextField.removeFromSuperview()
+            self.addressTextField.removeFromSuperview()
+            self.searchButton.removeFromSuperview()
+            self.addressTextField2.removeFromSuperview()
+            self.nextButton.removeFromSuperview()
+        } else if index == 1 {
+            self.subContentLabel.removeFromSuperview()
+            self.startButton.removeFromSuperview()
+            self.backButton.removeFromSuperview()
+            self.confirmView.removeFromSuperview()
+        }        
+    }
+    
+    func backButtonTapped(sender: AnyObject) {
+        self.view.endEditing(true)
+        self.view.frame.origin.y = 0
         
-        pageControl = UIPageControl(frame: CGRectMake(0, self.view.frame.maxY-50, scrWidth, 50))
-        pageControl.backgroundColor = UIColor.clearColor()
-        pageControl.numberOfPages = pageSize
-        pageControl.currentPage = 0
-        pageControl.userInteractionEnabled = false
-        pageControl.currentPageIndicatorTintColor = UIColorFromRGB(g_rs_Values.colorDeepOrange)
-        pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
-        
-        self.view.addSubview(pageControl)
-
+        self.scrollView.contentOffset.x = 0
+        dismissView(1)
+        initView(0)
     }
 
     func nextButtonTapped(sender: UIButton) {
-        if(!self.userName.isEmpty && !self.userPhone.isEmpty && !self.userAddress.isEmpty) {
+        self.view.endEditing(true)
+        self.view.frame.origin.y = 0
+        if(!self.userName.isEmpty && !self.userPhone.isEmpty && !self.userAddress1.isEmpty && !self.userAddress2.isEmpty) {
             if (self.userPhone.length < 11) || (self.userPhone.length > 11) || (self.userPhone.substringToIndex(3) != "010"){
                 self.view.makeToast(message: g_rs_Strings._tutorial_phone_error!, duration: 2, position: "center")
             } else {
                 self.scrollView.contentOffset.x = self.contentView.frame.width
+                dismissView(1)
                 initView(1)
             }
         } else {
@@ -202,8 +253,13 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
     func startButtonTapped(sender: UIButton) {
         if (self.agreeCheck) {
             //서버를 통해서 suid획득
-            g_userInfo.User("test", name: self.userName, phone: self.userPhone, address: self.userAddress)
+            g_userInfo.User("test", name: self.userName, phone: self.userPhone, address1: self.userAddress1, address2: self.userAddress2)
             g_userInfo.setUserPrefs()
+            
+            prefs.setBool(true, forKey: "FirstLaunch")
+            prefs.synchronize()
+            
+            self.dismissViewControllerAnimated(true, completion: nil)
         } else {
             self.view.makeToast(message: g_rs_Strings._tutorial_agree_error!, duration: 2, position: "center")
         }
@@ -220,6 +276,8 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
     }
     
     func searchButtonTapped(sender: UIButton) {
+        self.view.endEditing(true)
+        self.view.frame.origin.y = 0
         showAddressDlg()
     }
     
@@ -234,36 +292,35 @@ class ViewController: UIViewController, UIScrollViewDelegate, UITextFieldDelegat
         case 2:
             self.userPhone = textField.text
         case 3:
-            self.userAddress = textField.text
+            self.userAddress2 = textField.text!
         default:
             return
         }
     }
     
     func showAddressDlg() {
-        let bgnView = UIView(frame: CGRectMake(0, 0, self.view.frame.width, self.view.frame.height))
-        bgnView.backgroundColor = UIColor.darkGrayColor()
-        bgnView.alpha = 0.7
-        self.view.addSubview(bgnView)
-        
-        let addrViewHeight = self.view.frame.height * 0.7
         let addrView = NSBundle.mainBundle().loadNibNamed("AddressView", owner: self, options: nil).first as? AddressView
-        addrView?.frame = CGRectMake(16, (self.view.frame.height - addrViewHeight)/2, self.view.frame.width - 32, addrViewHeight)
+        addrView?.frame = CGRectMake(0, 0, self.view.frame.width, self.view.frame.height)
         addrView?.layer.borderColor = UIColor.darkGrayColor().CGColor
         addrView?.layer.borderWidth = 1
-        self.view.addSubview(addrView!)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("dismissAddrView:"), name:"AddrViewDismiss", object: nil)
         
+        self.view.addSubview(addrView!)
     }
     
-    func webViewDidFinishLoad(webView: UIWebView) {
-        print("he")
+    func dismissAddrView(notification: NSNotification) {
+        self.userAddress1 = g_userAddress
+        dismissView(0)
+        initView(0)
     }
     
-    func closeButtonTapped(sender: UIButton) {
-//        for n in 500...502 {
-            self.view.viewWithTag(500)?.removeFromSuperview()
-  //      }
-        sender.removeFromSuperview()
+    func selectedAddress(address: String) {
+        var tokenStringArr = address.componentsSeparatedByString(" ")
+        if tokenStringArr[3].isEmpty {
+            g_userAddress = tokenStringArr[0] + " " + tokenStringArr[1] + " " + tokenStringArr[2]
+        } else {
+            g_userAddress = tokenStringArr[0] + " " + tokenStringArr[1] + " " + tokenStringArr[2] + " " + tokenStringArr[3]
+        }
     }
     
     func scrollViewDidEndDecelerating(scrollView: UIScrollView)

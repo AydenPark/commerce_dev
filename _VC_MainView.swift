@@ -16,82 +16,92 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UISearchBarDel
     private var customTabmenu = CustomTabmenu()
     private var scrollView: UIScrollView!
 
+    var homeScrollView = UIScrollView()
+    var tabScrollViews = [UIScrollView]()
     let searchBar:UISearchBar = UISearchBar()
     var scrollPages = [UILabel]()
     override func viewDidLoad() {
         
-        let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("FirstLaunch")
-        if firstLaunch {
-            g_userInfo.getUserPrefs()
-            let navWidth = self.navigationController?.navigationBar.frame.width
-            let customView:UIView = UIView(frame: CGRectMake(0, 0, navWidth!, 44))
-            
-            //margin 16px, icon 36, margin 16px => 68 x 2 = 136
-            let titleLabel:UILabel = UILabel(frame: CGRectMake(0, 0, (customView.frame.width - 136) * 0.4 - 8, 44))
-            titleLabel.text = g_rs_Strings._main_navi_title
-            titleLabel.textAlignment = NSTextAlignment.Center
-            titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 20)
-            
-            //modify searchBar
-            //create searchBar
-            self.searchBar.delegate = self
-            self.searchBar.searchBarStyle = UISearchBarStyle.Minimal
-            self.searchBar.placeholder = g_rs_Strings._main_searchbar_ph
-            let textFieldInsideSearchBar = self.searchBar.valueForKey("searchField") as? UITextField //change text color
-            textFieldInsideSearchBar?.textColor = UIColor.whiteColor()
-            let textFieldInsideSearchBarLabel = textFieldInsideSearchBar!.valueForKey("placeholderLabel") as? UILabel //change placeholder color
-            textFieldInsideSearchBarLabel?.textColor = UIColor.whiteColor()
-            let image: UIImage = UIImage(named: "ic_search")! //change search icon
-            self.searchBar.setImage(image, forSearchBarIcon: UISearchBarIcon.Search, state: UIControlState.Normal)
-            //view for searchBar
-            let searchBarView:UIView = UIView(frame: CGRectMake((customView.frame.width - 136) * 0.4 + 8, 0, (customView.frame.width - 136) * 0.6 - 8, 44))
-            searchBarView.addSubview(self.searchBar)
-            self.searchBar.sizeToFit()
-            
-            customView.addSubview(titleLabel)
-            customView.addSubview(searchBarView)
-            self.navigationItem.titleView = customView
-            
-            //update datas from DB
-            g_pc_UpdateDB.updateEventsData()
-            g_pc_UpdateDB.updateTagsData()
-            g_pc_UpdateDB.updateItemsData()
-            
-            //custom tabbar
-            self.customTabmenu.frame = CGRectMake(0, customView.frame.height + 20, self.view.frame.width, 45)
-            self.customTabmenu.initView(self.view.frame.size)
-            self.view.addSubview(self.customTabmenu)
-            
-            //init custom tabbar button event
-            self.customTabmenu.homeButton.addTarget(self, action: Selector("homeButtonTapped:"), forControlEvents: .TouchUpInside)
-            for n in 0...self.customTabmenu.tabButton.count-1 {
-                self.customTabmenu.tabButton[n].addTarget(self, action: Selector("tabButtonTapped:"), forControlEvents: .TouchUpInside)
-            }
-            
-            //scrollview -> content view
-            self.scrollView = UIScrollView(frame: CGRectMake(0, customView.frame.height + 20 + self.customTabmenu.frame.height, self.view.frame.width, self.view.frame.height - (customView.frame.height + 20 + self.customTabmenu.frame.height)))
-            self.scrollView.backgroundColor = UIColor.clearColor()
-            self.scrollView.showsHorizontalScrollIndicator = false;
-            self.scrollView.showsVerticalScrollIndicator = false
-            self.scrollView.pagingEnabled = true
-            self.scrollView.delegate = self
-            self.view.addSubview(self.scrollView)
-            
-            
-            initView()
-            
-            let tap : UITapGestureRecognizer = UITapGestureRecognizer(target: self,action: "dismissKeyboard")
-            self.view.addGestureRecognizer(tap)
-        } else {
-            g_userInfo.initData()
-            self.performSegueWithIdentifier("LoginView", sender: self)
+        let navWidth = self.navigationController?.navigationBar.frame.width
+        let customView:UIView = UIView(frame: CGRectMake(0, 0, navWidth!, 44))
+        
+        //margin 16px, icon 36, margin 16px => 68 x 2 = 136
+        let titleButton = UIButton(type: .System)
+        titleButton.frame = CGRectMake(0, 0, (customView.frame.width - 136) * 0.4 - 8, 44)
+        titleButton.setTitle(g_rs_Strings._main_navi_title, forState: .Normal)
+        titleButton.addTarget(self, action: "goHome", forControlEvents: .TouchUpInside)
+        
+        //modify searchBar
+        //create searchBar
+        self.searchBar.delegate = self
+        self.searchBar.searchBarStyle = UISearchBarStyle.Minimal
+        self.searchBar.placeholder = g_rs_Strings._main_searchbar_ph
+        let textFieldInsideSearchBar = self.searchBar.valueForKey("searchField") as? UITextField //change text color
+        textFieldInsideSearchBar?.textColor = UIColor.whiteColor()
+        let textFieldInsideSearchBarLabel = textFieldInsideSearchBar!.valueForKey("placeholderLabel") as? UILabel //change placeholder color
+        textFieldInsideSearchBarLabel?.textColor = UIColor.whiteColor()
+        let image: UIImage = UIImage(named: "ic_search")! //change search icon
+        self.searchBar.setImage(image, forSearchBarIcon: UISearchBarIcon.Search, state: UIControlState.Normal)
+        //view for searchBar
+        let searchBarView:UIView = UIView(frame: CGRectMake((customView.frame.width - 136) * 0.4 + 8, 0, (customView.frame.width - 136) * 0.6 - 8, 44))
+        searchBarView.addSubview(self.searchBar)
+        self.searchBar.sizeToFit()
+        
+        customView.addSubview(titleButton)
+        customView.addSubview(searchBarView)
+        self.navigationItem.titleView = customView
+        
+        //update datas from DB
+        g_pc_UpdateDB.updateEventsData()
+        g_pc_UpdateDB.updateTagsData()
+        g_pc_UpdateDB.updateItemsData()
+        
+        //custom tabbar
+        self.customTabmenu.frame = CGRectMake(0, customView.frame.height + 20, self.view.frame.width, 45)
+        self.customTabmenu.initView(self.view.frame.size)
+        self.view.addSubview(self.customTabmenu)
+        
+        //init custom tabbar button event
+        self.customTabmenu.homeButton.addTarget(self, action: Selector("homeButtonTapped:"), forControlEvents: .TouchUpInside)
+        for n in 0...self.customTabmenu.tabButton.count-1 {
+            self.customTabmenu.tabButton[n].addTarget(self, action: Selector("tabButtonTapped:"), forControlEvents: .TouchUpInside)
         }
+        
+        //scrollview -> content view
+        self.scrollView = UIScrollView(frame: CGRectMake(0, customView.frame.height + 20 + self.customTabmenu.frame.height, self.view.frame.width, self.view.frame.height - (customView.frame.height + 20 + self.customTabmenu.frame.height)))
+        self.scrollView.backgroundColor = UIColor.clearColor()
+        self.scrollView.showsHorizontalScrollIndicator = false;
+        self.scrollView.showsVerticalScrollIndicator = false
+        self.scrollView.pagingEnabled = true
+        self.scrollView.delegate = self
+        self.view.addSubview(self.scrollView)        
+        
+        initView()
+        
+        let tapOut : UITapGestureRecognizer = UITapGestureRecognizer(target: self,action: "dismissKeyboard")
+        self.view.addGestureRecognizer(tapOut)
         
         super.viewDidLoad()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        let firstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("FirstLaunch")
+        if firstLaunch {
+            g_userInfo.getUserPrefs()
+            reFreshView()
+        } else {
+            g_userInfo.initData()
+            self.performSegueWithIdentifier("LoginView", sender: self)
+        }
+    }
+    
     func dismissKeyboard() {
         self.searchBar.endEditing(true)
+    }
+    
+    func goHome() {
+        self.customTabmenu.selection(0)
+        self.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -117,14 +127,26 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UISearchBarDel
         let pageSize = (g_rs_Strings._tab_text.count) + 1
         let scrWidth = self.view.frame.width
         self.scrollView.contentSize = CGSizeMake(CGFloat(pageSize) * scrWidth, 0)
-        
-        self.scrollView.addSubview(initHomeView(scrWidth))
-        
+        self.homeScrollView = initHomeView(scrWidth)
+        self.scrollView.addSubview(self.homeScrollView)
         //탭 뷰 생성
         for var i = 1; i < pageSize; i++
         {
             let tag = g_rs_Strings._tab_text[i-1]
-            self.scrollView.addSubview(initTabView(tag!, scrWidth: scrWidth, idx: i))
+            self.tabScrollViews.append(initTabView(tag!, scrWidth: scrWidth, idx: i))
+            self.scrollView.addSubview(self.tabScrollViews[i-1])
+        }
+    }
+    
+    func reFreshView() {
+        self.homeScrollView.removeFromSuperview()
+        self.scrollView.addSubview(self.homeScrollView)
+        
+        let pageSize = (g_rs_Strings._tab_text.count) + 1
+        for var i = 1; i < pageSize; i++
+        {
+            self.tabScrollViews[i-1].removeFromSuperview()
+            self.scrollView.addSubview(self.tabScrollViews[i-1])
         }
     }
 
@@ -381,5 +403,5 @@ class MainViewController: UIViewController, UIScrollViewDelegate, UISearchBarDel
         let tag = g_rs_Strings._tab_text[idx-1]
         NSLog("refresh")
         self.scrollView.addSubview(initTabView(tag!, scrWidth: scrWidth, idx: idx, subTagIdx: subTagIdx))
-    }        
+    }
 }

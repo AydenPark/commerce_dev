@@ -31,20 +31,23 @@ public class User {
     private var suid: String?
     private var name: String?
     private var phone: String?
-    private var address: String?
+    private var address1: String?
+    private var address2: String?
     
     public func initData() {
         self.suid = "";
         self.name = "";
         self.phone = "";
-        self.address = "";
+        self.address1 = "";
+        self.address2 = "";
     }
     
-    public func User(suid: String, name: String, phone: String, address: String) {
+    public func User(suid: String, name: String, phone: String, address1: String, address2: String) {
         self.suid = suid;
         self.name = name;
         self.phone = phone;
-        self.address = address;
+        self.address1 = address1;
+        self.address2 = address2;
     }
     
     public func userPrefsInit() {
@@ -52,7 +55,8 @@ public class User {
             "suid": self.suid!,
             "name": self.name!,
             "phone": self.phone!,
-            "address": self.address!]
+            "address1": self.address1!,
+            "address2": self.address2!]
         prefs.setObject(userInfo, forKey: "USER_INFO")
         prefs.synchronize()
     }
@@ -62,7 +66,8 @@ public class User {
         "suid": self.suid!,
         "name": self.name!,
         "phone": self.phone!,
-        "address": self.address!]
+        "address1": self.address1!,
+        "address2": self.address2!]
         prefs.setObject(userInfo, forKey: "USER_INFO")
         prefs.synchronize()
     }
@@ -73,7 +78,8 @@ public class User {
             setSUID(userInfo["suid"] as! String)
             setName(userInfo["name"] as! String)
             setPhone(userInfo["phone"] as! String)
-            setAddress(userInfo["address"] as! String)
+            setAddress1(userInfo["address1"] as! String)
+            setAddress2(userInfo["address2"] as! String)
         }
     }
     
@@ -86,8 +92,11 @@ public class User {
     public func getPhone()->String { return phone! }
     public func setPhone(phone: String) { self.phone = phone }
     
-    public func getAddress()->String { return address! }
-    public func setAddress(address: String) { self.address = address }
+    public func getAddress1()->String { return address1! }
+    public func setAddress1(address: String) { self.address1 = address }
+    
+    public func getAddress2()->String { return address2! }
+    public func setAddress2(address: String) { self.address2 = address }
 }
 
 func SendToDB(datas: [rsCBuys]) {
@@ -202,7 +211,43 @@ extension String
     }
 }
 
+extension UIView {
+    
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+            layer.masksToBounds = newValue > 0
+        }
+    }
+    
+    @IBInspectable var borderWidth: CGFloat {
+        get {
+            return layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }
+    
+    @IBInspectable var borderColor: UIColor? {
+        get {
+            return UIColor(CGColor: layer.borderColor!)
+        }
+        set {
+            layer.borderColor = newValue?.CGColor
+        }
+    }    
+}
+
 protocol SubTagDispDelegate {
     // 선택한 아이템의 정보를 전달 하기 위한 델리게이트 메소드
     func tappedItemInfo(itemData: rsCItems)
+}
+
+protocol AddressDelegate {
+    // 선택한 아이템의 정보를 전달 하기 위한 델리게이트 메소드
+    func selectedAddress(address: String)
 }
